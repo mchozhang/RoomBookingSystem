@@ -1,5 +1,5 @@
 # Booker - Room Reservation System
-Wenhao Zhang 970012
+Wenhao Zhang 970012  
 Dulki Thalalle-Hewage 879076
 
 ## Overview
