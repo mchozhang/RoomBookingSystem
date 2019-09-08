@@ -21,6 +21,6 @@ public class HomeServlet extends HttpServlet {
         System.out.println("home servlet");
         String path = request.getServletPath();
         request.setAttribute("title", "Title of our application");
-        request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 }
