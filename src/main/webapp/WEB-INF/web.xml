@@ -5,7 +5,7 @@
          version="4.0">
     <servlet>
         <servlet-name>BookerServlet</servlet-name>
-        <servlet-class>BookerServlet</servlet-class>
+        <servlet-class>com.booker.BookerServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
