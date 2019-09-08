@@ -7,13 +7,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "com.booker.BookerServlet", urlPatterns = "/")
-public class BookerServlet extends HttpServlet {
+public class HomeServlet extends HttpServlet {
+    public HomeServlet() {
+        super();
+        System.out.println("!11");
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("处理Get请求。。。。。");
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        System.out.println("home servlet");
+        String path = request.getServletPath();
+        request.setAttribute("title", "Title of our application");
+        request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
     }
 }
