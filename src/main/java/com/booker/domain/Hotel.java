@@ -4,13 +4,10 @@ package com.booker.domain;
 public class Hotel {
     private String id;
     private String name;
-    private String suburb;
-    private String address;
+    private Location location;
 
-    public Hotel(String name, String suburb, String address) {
+    public Hotel(String name) {
         this.name = name;
-        this.suburb = suburb;
-        this.address = address;
     }
 
     public String getId() {
@@ -29,19 +26,11 @@ public class Hotel {
         this.name = name;
     }
 
-    public String getSuburb() {
-        return suburb;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setSuburb(String suburb) {
-        this.suburb = suburb;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
