@@ -1,12 +1,12 @@
 package com.booker.domain;
 
-public class Catalogue {
+public class Category {
     private String id;
     private String name;
     private Hotel hotel;
     private Float price;
 
-    public Catalogue() {
+    public Category() {
 
     }
 
