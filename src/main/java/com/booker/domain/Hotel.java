@@ -1,20 +1,15 @@
 package com.booker.domain;
 
-
 public class Hotel {
-    private String id;
+    private int id;
     private String name;
     private Location location;
 
-    public Hotel(String name) {
-        this.name = name;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -32,5 +27,11 @@ public class Hotel {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Hotel[id: %d, name: %s, suburb: %s, address: %s]",
+                this.id, this.name, this.location.getSuburb(), this.location.getAddress());
     }
 }
