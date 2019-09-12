@@ -17,14 +17,19 @@ public class HomeServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        String username = (String) request.getAttribute("username");
+//        String password = (String) request.getAttribute("password");
+
+        String username = request.getParameter("username");
+        System.out.println(username);
+        response.getWriter().write("success");
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Hotel hotel = hotelMapper.findHotelByName("Marriott");
+        Hotel hotel = hotelMapper.findHotelByName("Marriott Hotel");
         System.out.println(hotel.toString());
         String path = request.getServletPath();
-        request.setAttribute("title", "Title of our application");
         request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 }

@@ -15,6 +15,10 @@ create table hotels
     address varchar(50)
 );
 
+insert into hotels (name, suburb, address) values ('Marriott Hotel', 'Melbourne CBD', 'Corner Exhibition &, Lonsdale St');
+insert into hotels (name, suburb, address) values ('Crown Hotel', 'South Melbourne', 'Crown Metropol 8 Whiteman St');
+
+
 create table users
 (
     id       serial primary key,
@@ -24,6 +28,12 @@ create table users
     hotelId  integer references hotels (id),
     role     varchar(30)
 );
+
+insert into users (username, password, full_name, role) values ('alice', 'admin', 'Alice Parker', 'customer');
+insert into users (username, password, full_name, role) values ('bob', 'admin', 'Bob Miles', 'customer');
+insert into users (username, password, hotelId, role) values ('chris', 'admin', 1, 'staff');
+insert into users (username, password, hotelId, role) values ('dion', 'admin', 2, 'staff');
+
 
 create table services
 (

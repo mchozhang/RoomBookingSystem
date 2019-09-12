@@ -93,7 +93,7 @@ public class QueryExecutor {
         try {
             connection.close();
         } catch (SQLException e) {
-            //LOGGER.error("Error while closing connection");
+            e.printStackTrace();
         }
     }
 }

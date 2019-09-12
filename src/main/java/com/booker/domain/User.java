@@ -1,16 +1,16 @@
 package com.booker.domain;
 
 public abstract class User {
-    protected String id;
+    protected int id;
     protected String username;
     protected String password;
     protected String role;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -16,6 +16,20 @@ public class HotelMapperImpl implements HotelMapper {
         executor = QueryExecutor.getInstance();
     }
 
+    public Hotel findHotelById(int id) {
+        try {
+            String sql = "select * from hotels where id = ?";
+            ResultSet rs = executor.getResultSet(sql, id);
+            if (rs.next()) {
+                Hotel hotel = createEntity(rs);
+                return hotel;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Hotel findHotelByName(String name) {
         try {
             String sql = "select * from hotels where name = ?";
