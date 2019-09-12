@@ -8,12 +8,29 @@ import com.booker.domain.Location;
 import javax.management.relation.Role;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HotelMapperImpl implements HotelMapper {
     private QueryExecutor executor;
 
     public HotelMapperImpl(){
         executor = QueryExecutor.getInstance();
+    }
+
+    public List<Hotel> findAllHotels() {
+        try {
+            String sql = "select * from hotels";
+            ResultSet rs = executor.getResultSet(sql);
+            List<Hotel> hotels = new ArrayList<Hotel>();
+            while (rs.next()) {
+                hotels.add(createEntity(rs));
+            }
+            return hotels;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Hotel findHotelById(int id) {

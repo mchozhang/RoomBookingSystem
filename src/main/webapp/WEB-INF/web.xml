@@ -3,12 +3,33 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <!--login-->
     <servlet>
-        <servlet-name>Home</servlet-name>
-        <servlet-class>com.booker.servlet.HomeServlet</servlet-class>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>com.booker.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Home</servlet-name>
-        <url-pattern></url-pattern>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/loginServlet</url-pattern>
+    </servlet-mapping>
+
+    <!--hotel list-->
+    <servlet>
+        <servlet-name>HotelList</servlet-name>
+        <servlet-class>com.booker.servlet.HotelListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HotelList</servlet-name>
+        <url-pattern>/hotelListServlet</url-pattern>
+    </servlet-mapping>
+
+    <!--hotel-->
+    <servlet>
+        <servlet-name>Hotel</servlet-name>
+        <servlet-class>com.booker.servlet.HotelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Hotel</servlet-name>
+        <url-pattern>/hotelServlet</url-pattern>
     </servlet-mapping>
 </web-app>

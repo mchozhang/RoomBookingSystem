@@ -54,6 +54,17 @@ create table hotels_services
     serviceId integer references services (id)
 );
 
+insert into hotels_services (hotelId, serviceId) values (1, 1);
+insert into hotels_services (hotelId, serviceId) values (1, 2);
+insert into hotels_services (hotelId, serviceId) values (1, 3);
+insert into hotels_services (hotelId, serviceId) values (1, 4);
+insert into hotels_services (hotelId, serviceId) values (1, 5);
+insert into hotels_services (hotelId, serviceId) values (2, 2);
+insert into hotels_services (hotelId, serviceId) values (2, 3);
+insert into hotels_services (hotelId, serviceId) values (2, 4);
+insert into hotels_services (hotelId, serviceId) values (2, 5);
+
+
 create table categories
 (
     id      serial primary key,

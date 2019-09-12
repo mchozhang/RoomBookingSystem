@@ -8,10 +8,16 @@
     </jsp:attribute>
 
     <jsp:body>
+        <div style="margin-bottom: 20px; margin-left: 10px">
+            <h1>Login</h1>
+        </div>
         <div class="col-sm-3">
             <div class="panel panel-default">
+                <div>
+                    <a style="color: indianred">${errorMessage}</a>
+                </div>
                 <div class="panel-body">
-                    <form>
+                    <form action="${pageContext.request.contextPath}/loginServlet" method="post">
                         <div class="form-group">
                             <input type="text" class="form-control" id="username-input" name="username"
                                    placeholder="Username">
@@ -20,7 +26,7 @@
                             <input type="password" class="form-control" id="password-input" name="password"
                                    placeholder="Password">
                         </div>
-                        <button class="btn btn-dark" onclick="login()">Log In</button>
+                        <button type="submit" class="btn btn-dark">Log In</button>
                     </form>
                 </div>
             </div>
@@ -41,17 +47,13 @@
         };
 
         let options = {
-            url: "",
-            dataType: "json",
-            contentType: "application/json",
-            type: "post",
+            url: "/loginServlet",
             data: data,
+            success: function(response){
+                console.log(response);
+            }
         };
 
-        // $.ajax(options)
-        //     .done(function (responseText) {
-        //         console.log("111");
-        //         console.log(responseText);
-        //     });
+        $.ajax(options);
     }
 </script>
