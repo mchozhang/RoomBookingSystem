@@ -29,6 +29,14 @@ public class Hotel {
         this.location = location;
     }
 
+    public String getSuburb() {
+        return this.location.getSuburb();
+    }
+
+    public String getAddress() {
+        return this.location.getAddress();
+    }
+
     @Override
     public String toString() {
         return String.format("Hotel[id: %d, name: %s, suburb: %s, address: %s]",
