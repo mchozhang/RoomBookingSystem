@@ -2,8 +2,6 @@ package com.booker.database.impl;
 
 import com.booker.database.QueryExecutor;
 import com.booker.database.ServiceMapper;
-import com.booker.domain.Hotel;
-import com.booker.domain.Location;
 import com.booker.domain.Service;
 
 import java.sql.ResultSet;
@@ -20,7 +18,9 @@ public class ServiceMapperImpl implements ServiceMapper {
 
     public List<Service> findServicesByHotelId(int id) {
         try {
-            String sql = "select services.id, services.name from hotels_services join services on hotels_services.serviceId = services.id where hotels_services.hotelId = ?";
+            String sql = "select services.id, services.name " +
+                    "from hotels_services join services on hotels_services.serviceId = services.id " +
+                    "where hotels_services.hotelId = ?";
             ResultSet rs = executor.getResultSet(sql, id);
             List<Service> services = new ArrayList<Service>();
             while (rs.next()) {

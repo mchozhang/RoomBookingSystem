@@ -1,21 +1,30 @@
 package com.booker.domain;
 
-public class Category {
-    private String id;
+public class Catalogue {
+    private int id;
     private String name;
     private Hotel hotel;
+    private String description;
     private Float price;
 
-    public Category() {
+    public Catalogue() {
 
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {

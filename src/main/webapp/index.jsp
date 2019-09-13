@@ -37,7 +37,6 @@
 
 <script type="text/javascript">
     function login() {
-        console.log("login");
         let username = $("#username-input").val();
         let password = $("#password-input").val();
 

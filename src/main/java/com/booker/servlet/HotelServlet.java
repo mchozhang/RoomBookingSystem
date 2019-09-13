@@ -1,9 +1,12 @@
 package com.booker.servlet;
 
+import com.booker.database.CatalogueMapper;
 import com.booker.database.HotelMapper;
 import com.booker.database.ServiceMapper;
+import com.booker.database.impl.CatalogueMapperImpl;
 import com.booker.database.impl.HotelMapperImpl;
 import com.booker.database.impl.ServiceMapperImpl;
+import com.booker.domain.Catalogue;
 import com.booker.domain.Hotel;
 import com.booker.domain.Service;
 import com.booker.domain.User;
@@ -18,11 +21,13 @@ import java.util.List;
 public class HotelServlet extends HttpServlet {
     private HotelMapper hotelMapper;
     private ServiceMapper serviceMapper;
+    private CatalogueMapper catalogueMapper;
 
     public HotelServlet() {
         super();
         hotelMapper = new HotelMapperImpl();
         serviceMapper = new ServiceMapperImpl();
+        catalogueMapper = new CatalogueMapperImpl();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,13 +41,16 @@ public class HotelServlet extends HttpServlet {
             return;
         }
 
+        // acquire data from database
         Hotel hotel = hotelMapper.findHotelById(hotelId);
         List<Service> services = serviceMapper.findServicesByHotelId(hotelId);
+        List<Catalogue> catalogues = catalogueMapper.findCataloguesByHotelId(hotelId);
 
         // set attributes
         request.setAttribute("user", user);
         request.setAttribute("hotel", hotel);
         request.setAttribute("services", services);
+        request.setAttribute("catalogues", catalogues);
         request.getRequestDispatcher("/hotel.jsp").forward(request, response);
     }
 

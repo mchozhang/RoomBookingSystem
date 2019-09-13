@@ -22,14 +22,31 @@
                     <li class="list-group-item">${service.getName()}</li>
                 </c:forEach>
             </ul>
+
+            <div style="margin-top: 20px">
+                <h2>Room Catalogues</h2>
+            </div>
+            <c:forEach items="${catalogues}" var="catalogue">
+                <div class="card" style="margin-top: 20px">
+                    <div class="card-body">
+                        <h5 class="card-title">${catalogue.getName()}</h5>
+                        <p class="card-text">${catalogue.getDescription()}</p>
+                        <p class="card-text">price: $${catalogue.getPrice()}</p>
+
+                        <button class="btn btn-primary" onclick="bookClick(${catalogue.getId()})">Book</button>
+                    </div>
+                </div>
+            </c:forEach>
         </div>
     </jsp:body>
 
 </template:generic>
 
 <script type="text/javascript">
-    function login() {
 
+    function bookClick(catalogueId) {
+        console.log("book on click " + catalogueId);
+        window.location.href = '/bookingServlet?id=' + catalogueId;
     }
 </script>
 

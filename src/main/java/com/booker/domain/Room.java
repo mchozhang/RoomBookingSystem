@@ -3,7 +3,7 @@ package com.booker.domain;
 public class Room {
     private String id;
     private String number;
-    private Category category;
+    private Catalogue catalogue;
 
     public String getId() {
         return id;
@@ -21,11 +21,11 @@ public class Room {
         this.number = number;
     }
 
-    public Category getCategory() {
-        return category;
+    public Catalogue getCatalogue() {
+        return catalogue;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCatalogue(Catalogue catalogue) {
+        this.catalogue = catalogue;
     }
 }
