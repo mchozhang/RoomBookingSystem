@@ -43,7 +43,6 @@
 </template:generic>
 
 <script type="text/javascript">
-
     function bookClick(catalogueId) {
         console.log("book on click " + catalogueId);
         window.location.href = '/bookingServlet?id=' + catalogueId;

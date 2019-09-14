@@ -1,7 +1,5 @@
 package com.booker.domain;
 
-import java.util.Date;
-
 public class Customer extends User {
     private String fullName;
 

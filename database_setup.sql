@@ -4,6 +4,7 @@ drop table if exists users cascade;
 drop table if exists services cascade;
 drop table if exists hotels_services cascade;
 drop table if exists catalogues cascade;
+drop table if exists categories cascade;
 drop table if exists rooms cascade;
 drop table if exists bookings cascade;
 
@@ -63,7 +64,6 @@ insert into hotels_services (hotelId, serviceId) values (2, 2);
 insert into hotels_services (hotelId, serviceId) values (2, 3);
 insert into hotels_services (hotelId, serviceId) values (2, 4);
 insert into hotels_services (hotelId, serviceId) values (2, 5);
-
 
 create table catalogues
 (
