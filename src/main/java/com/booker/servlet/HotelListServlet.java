@@ -1,7 +1,5 @@
 package com.booker.servlet;
 
-import com.booker.database.HotelMapper;
-import com.booker.database.impl.HotelMapperImpl;
 import com.booker.domain.Customer;
 import com.booker.domain.Hotel;
 import com.booker.domain.Staff;
@@ -15,11 +13,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class HotelListServlet extends HttpServlet {
-    private HotelMapper hotelMapper;
 
     public HotelListServlet(){
         super();
-        hotelMapper = new HotelMapperImpl();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,7 +32,10 @@ public class HotelListServlet extends HttpServlet {
             response.sendRedirect("/index.jsp");
             return;
         }
-        List<Hotel> hotels =  hotelMapper.findAllHotels();
+
+        List<Hotel> hotels =  Hotel.getHotelList();
+
+        // set attributes to jsp
         request.setAttribute("hotels", hotels);
         request.setAttribute("user", user);
         request.getRequestDispatcher("/hotel_list.jsp").forward(request, response);
