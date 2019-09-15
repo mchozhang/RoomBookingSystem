@@ -10,15 +10,12 @@
     <link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/resources/css/home.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap-tagsinput/css/bootstrap-tagsinput.css"
           rel="stylesheet"/>
-<<<<<<< HEAD
     <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css"
           rel="stylesheet"/>
-=======
->>>>>>> ef5fa25ec4ac063113172a2f242b810f74ff20f3
+    <link href="${pageContext.request.contextPath}/resources/css/home.css" rel="stylesheet">
 </head>
 <body>
 <div id="page-header">
@@ -35,10 +32,7 @@
 <script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap-tagsinput/js/bootstrap-tagsinput.js"></script>
-<<<<<<< HEAD
 <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-=======
->>>>>>> ef5fa25ec4ac063113172a2f242b810f74ff20f3
 <script src="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/js/all.min.js"></script>
 
 <!-- Core plugin JavaScript-->

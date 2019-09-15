@@ -4,7 +4,6 @@ import com.booker.database.HotelMapper;
 import com.booker.database.QueryExecutor;
 import com.booker.database.UserMapper;
 import com.booker.domain.Customer;
-import com.booker.domain.Hotel;
 import com.booker.domain.Staff;
 import com.booker.domain.User;
 

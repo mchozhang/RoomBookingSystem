@@ -1,18 +1,13 @@
 package com.booker.domain;
 
-<<<<<<< HEAD
 import com.booker.database.UserMapper;
 import com.booker.database.impl.UserMapperImpl;
-
-=======
->>>>>>> ef5fa25ec4ac063113172a2f242b810f74ff20f3
 public abstract class User {
     protected int id;
     protected String username;
     protected String password;
     protected String role;
 
-<<<<<<< HEAD
     /**
      * authenticate the username and password of an account
      * @param username username
@@ -25,8 +20,6 @@ public abstract class User {
         return user;
     }
 
-=======
->>>>>>> ef5fa25ec4ac063113172a2f242b810f74ff20f3
     public int getId() {
         return id;
     }

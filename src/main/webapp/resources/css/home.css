@@ -1,63 +1,102 @@
-.table-row{
-  cursor:pointer;
-}
-
-.sidebar {
-  width: 20rem !important;
+.table-row {
+    cursor: pointer;
 }
 
 .nav-item {
-  width: 20rem;
-  margin-bottom: 1.5rem;
-}
-
-.sidebar .nav-item .nav-link {
-  padding-top: 0.3rem;
-  padding-bottom: 0.3rem;
-}
-
-.sidebar .bootstrap-tagsinput {
-  width: 18rem;
-  margin-left: 1rem;
+    width: 20rem;
+    margin-bottom: 1.5rem;
 }
 
 .bootstrap-tagsinput .badge {
-  margin-right: 5px;
-  background-color: #36b9cc;
-}
-
-.sidebar select {
-  background-color: #fff;
-  border-color: #fff;
-  margin-left: 1rem;
-  width: 18rem
+    margin-right: 5px;
+    background-color: #36b9cc;
 }
 
 .radio-group, .checkbox-group {
-  margin-left: 1rem;
-  width: 18rem;
+    margin-left: 1rem;
+    width: 18rem;
 }
 
-.radio-group .radio {
-  display: block;
+.table-title {
+  margin: 0 0 10px;
 }
 
-.radio-group label {
-  color: #ffffff;
-  font-size: 14px;
-  margin-top: 1px;
-  margin-left: 2px;
+.table-title h2 {
+  margin: 6px 0 0;
+  font-size: 22px;
 }
 
-.checkbox-group label {
-  color: #ffffff;
-  font-size: 14px;
-  margin-top: 1px;
-  margin-left: 2px;
+.table-title .add-new {
+  float: right;
+  height: 30px;
+  font-weight: bold;
+  font-size: 12px;
+  text-shadow: none;
+  min-width: 100px;
+  border-radius: 50px;
+  line-height: 13px;
+}
+.table-title .add-new i {
+  margin-right: 4px;
+}
+.modal table.table {
+  table-layout: fixed;
 }
 
-#searchBtn, #radarBtn {
-  margin-left: 1rem;
-  width: 18rem;
-  color: #4e73df;
+table.table tr th, table.table tr td {
+  border-color: #e9e9e9;
+}
+
+.modal table.table th i {
+  font-size: 13px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.modal table.table th:last-child {
+  width: 100px;
+}
+
+table.table td a {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 5px;
+  min-width: 24px;
+}
+
+table.table td a.add {
+  color: #27C46B;
+}
+table.table td a.edit {
+  color: #FFC107;
+}
+
+table.table td a.delete {
+  color: #E34724;
+}
+
+table.table td i {
+  font-size: 19px;
+}
+
+table.table td a.add i {
+  font-size: 24px;
+  margin-right: -1px;
+  position: relative;
+  top: 3px;
+}
+
+table.table .form-control {
+  height: 32px;
+  line-height: 32px;
+  box-shadow: none;
+  border-radius: 2px;
+}
+
+table.table .form-control .error-input {
+  border-color: #f50000;
+}
+
+table.table td .add {
+  display: none;
 }

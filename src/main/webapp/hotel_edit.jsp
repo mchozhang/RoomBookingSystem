@@ -1,6 +1,7 @@
 <%@taglib prefix="template" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <template:generic>
     <jsp:attribute name="header">
     </jsp:attribute>
@@ -29,17 +30,23 @@
 
             <div style="margin-top: 20px">
                 <h2>Room Catalogues
-                    <button class="btn btn-primary btn-sm" onclick="editCatalogues(${hotel.getId()})" data-toggle="modal" data-target="#catalogueModal">Edit</button>
+                    <button class="btn btn-primary btn-sm" onclick="addCatalogues(${hotel.getId()})"
+                            data-toggle="modal" data-target="#add-catalogue-modal">Add
+                    </button>
                 </h2>
             </div>
-            <c:forEach items="${catalogues}" var="catalogue">
+            <c:forEach items="${catalogues}" var="catalogue" varStatus="loop">
                 <div class="card" style="margin-top: 20px">
                     <div class="card-body">
                         <h5 class="card-title">${catalogue.getName()}</h5>
                         <p class="card-text">${catalogue.getDescription()}</p>
                         <p class="card-text">price: $${catalogue.getPrice()}</p>
 
-                        <button class="btn btn-primary" onclick="editCatalogue(${catalogue.getId()})">Edit</button>
+                        <button class="btn btn-primary"
+                                onclick="editCatalogue('${catalogue.getId()}', '${catalogue.getName()}', '${catalogue.getDescription()}', '${catalogue.getPrice()}', '${catalogue.getRoomNumberStr()}')"
+                                data-toggle="modal"
+                                data-target="#edit-catalogue-modal">Edit
+                        </button>
                     </div>
                 </div>
             </c:forEach>
@@ -50,41 +57,147 @@
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="serviceModalLabel">Services</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
+                    <form action="${pageContext.request.contextPath}/hotelServlet" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="serviceModalLabel">Services</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="service-input" value="${serviceStr}" data-role="tagsinput"
+                                   name="serviceStr"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-=
-        <!-- catalogue modal -->
-        <div class="modal fade" id="catalogueModal" tabindex="-1" role="dialog" aria-labelledby="catalogueModalLabel"
+
+        <!-- add catalogue modal -->
+        <div class="modal fade" id="add-catalogue-modal" tabindex="-1" role="dialog"
+             aria-labelledby="add-catalogue-modal-label"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="catalogueModalLabel">Room Catalogues</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <input>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
+                    <form action="/hotelServlet" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="add-catalogue-modal-label">Room Catalogues</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="add-catalogue-name">Catalogue Name</label>
+                                <input type="text" class="form-control" id="add-catalogue-name" name="addName">
+                            </div>
+                            <div class="form-group">
+                                <label for="add-catalogue-des">Description</label>
+                                <textarea class="form-control" id="add-catalogue-des" rows="2"
+                                          name="addDescription"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="add-catalogue-price">Price</label>
+                                <input type="number" class="form-control" id="add-catalogue-price" name="addPrice">
+                            </div>
+
+                            <%--room edit--%>
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <label>Rooms</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="button" class="btn btn-info" id="add-rooms" onclick="addTableAddRow()">
+                                            <i class="fa fa-plus"></i>Add Room
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered room-table" id="add-table">
+                                <thead>
+                                <tr>
+                                    <th>Room Number</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Catalogue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- edit catalogue modal -->
+        <div class="modal fade" id="edit-catalogue-modal" tabindex="-1" role="dialog"
+             aria-labelledby="edit-catalogue-modal-label"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="/hotelServlet" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="edit-catalogue-modal-label">Room Catalogues</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input id="edit-id" name="edit-id" hidden>
+                            <div class="form-group">
+                                <label for="edit-catalogue-name">Catalogue Name</label>
+                                <input type="text" class="form-control" id="edit-catalogue-name" name="editName">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-catalogue-des">Description</label>
+                                <textarea class="form-control" id="edit-catalogue-des" rows="2"
+                                          name="editDescription"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-catalogue-price">Price</label>
+                                <input type="number" class="form-control" id="edit-catalogue-price" name="addPrice">
+                            </div>
+
+                            <%--room edit--%>
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <label>Rooms</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="button" class="btn btn-info" id="edit-rooms" onclick="editTableAddRow()">
+                                            <i class="fa fa-plus"></i>Add Room
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered room-table" id="edit-table">
+                                <thead>
+                                <tr>
+                                    <th>Room Number</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -95,18 +208,51 @@
 <script type="text/javascript">
 
     function editService(hotelId) {
-        console.log("edit service ");
-        console.log(hotelId);
+        $('#service-input').tagsinput('removeAll');
+        $('#service-input').tagsinput('add', '${serviceStr}');
     }
 
-    function editCatalogues(hotelId) {
+    function addCatalogues(hotelId) {
         console.log("edit catalogues ");
         console.log(hotelId);
     }
 
-    function editCatalogue(catalogueId) {
-        console.log("book on click " + catalogueId);
-        window.location.href = '/bookingServlet?id=' + catalogueId;
+    function editCatalogue(id, name, des, price, rooms) {
+        $('#edit-table tbody tr').remove();
+        $('#edit-catalogue-name').val(name);
+        $('#edit-catalogue-des').val(des);
+        $('#edit-catalogue-price').val(price);
+
+        let numbers = rooms.split(',');
+
+        for (number of numbers) {
+            addRoom("editRooms", "edit-table", number);
+        }
     }
+    // Append table with add row form on add new button click
+    function addTableAddRow() {
+        addRoom("addRooms", "add-table", "");
+    }
+
+    function editTableAddRow() {
+        addRoom("editRooms", "edit-table", "");
+    }
+
+    function addRoom(name, table, value) {
+        console.log("add room");
+        console.log(value);
+        let actions = '<a class="delete" title="Delete" data-toggle="tooltip"><i class="fas fa-trash"></i></a>';
+        let row = '<tr>' +
+            '<td><input type="text" class="form-control" name="' + name +'" value="' + value +'"></td>' +
+            '<td>' + actions + '</td>' +
+            '</tr>';
+        $("#" + table).append(row);
+    }
+
+
+    // Delete row on delete button click
+    $(document).on("click", ".delete", function () {
+        $(this).parents("tr").remove();
+    });
 </script>
 

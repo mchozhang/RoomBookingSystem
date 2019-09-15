@@ -4,13 +4,11 @@ import com.booker.domain.Customer;
 import com.booker.domain.Staff;
 import com.booker.domain.User;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class LoginServlet extends HttpServlet {
     public LoginServlet() {
@@ -25,15 +23,19 @@ public class LoginServlet extends HttpServlet {
         String path = request.getServletPath();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+
+        // handle user authentication
         User user = User.authenticate(username, password);
         if (user != null) {
             request.getSession().setAttribute("user", user);
             if (user instanceof Customer) {
+                // redirect customer to hotel list page
                 response.sendRedirect("/hotelListServlet");
 
             } else if(user instanceof Staff) {
-                response.sendRedirect("/hotelServlet");
-
+                // redirect staff to his hotel page
+                Staff staff = (Staff)user;
+                response.sendRedirect("/hotelServlet?id=" + staff.getHotel().getId());
             }
         } else {
             request.setAttribute("errorMessage", "Either username or password is wrong.");

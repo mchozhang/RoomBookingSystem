@@ -1,5 +1,11 @@
 package com.booker.domain;
 
+import com.booker.database.RoomMapper;
+import com.booker.database.impl.RoomMapperImpl;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Catalogue {
     private int id;
     private String name;
@@ -9,6 +15,21 @@ public class Catalogue {
 
     public Catalogue() {
 
+    }
+
+    public List<Room> getRooms() {
+        RoomMapper mapper = new RoomMapperImpl();
+        List<Room> rooms = mapper.findRoomsByCatalogueId(this.id);
+        return rooms;
+    }
+
+    public String getRoomNumberStr() {
+        List<Room> rooms = getRooms();
+        String[] roomNumberList = new String[rooms.size()];
+        for (int i = 0; i < rooms.size(); i++) {
+            roomNumberList[i] = rooms.get(i).getNumber();
+        }
+        return String.join(",", roomNumberList);
     }
 
     public int getId() {

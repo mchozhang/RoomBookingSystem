@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 public class HotelServlet extends HttpServlet {
 
@@ -41,17 +41,41 @@ public class HotelServlet extends HttpServlet {
         // acquire hotel information
         Hotel hotel = Hotel.getHotelById(hotelId);
         List<Service> services = hotel.getServices();
+        List<String> serviceNameList = new ArrayList<>();
+        for (Service service: services){
+            serviceNameList.add(service.getName());
+        }
+        String servicesStr = String.join(",", serviceNameList);
         List<Catalogue> catalogues = hotel.getCatalogues();
+        Map<Integer, List<Room>> rooms = new HashMap<>();
+        for (Catalogue catalogue: catalogues) {
+            rooms.put(catalogue.getId(), catalogue.getRooms());
+        }
 
         // set attributes
         request.setAttribute("user", user);
         request.setAttribute("hotel", hotel);
         request.setAttribute("services", services);
+        request.setAttribute("serviceStr", servicesStr);
         request.setAttribute("catalogues", catalogues);
+        request.setAttribute("rooms", rooms);
         request.getRequestDispatcher(page).forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String serviceStr = request.getParameter("serviceStr");
+        System.out.println(serviceStr);
+
+        String addName = request.getParameter("addName");
+        String addDescription = request.getParameter("addDescription");
+        String addPrice = request.getParameter("addPrice");
+//        String addRooms = request.getParameter("addRooms");
+        String[] addRooms = request.getParameterValues("addRooms");
+        System.out.println(addName);
+        System.out.println(addDescription);
+        System.out.println(addPrice);
+//        System.out.println(addRooms);
+        System.out.println(Arrays.toString(addRooms));
+
     }
 }
