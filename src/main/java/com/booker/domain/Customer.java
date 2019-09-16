@@ -13,7 +13,6 @@ public class Customer extends User {
         super();
         this.role = "customer";
         this.fullName = fullName;
-        UnitOfWork.getInstance().registerNew(this);
     }
 
     public Customer(int id, String fullName) {
@@ -33,7 +32,6 @@ public class Customer extends User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-        UnitOfWork.getInstance().registerDirty(this);
     }
 
     private void load() {

@@ -14,7 +14,6 @@ public class Room {
     public Room(String number, int catalogueId) {
         this.number = number;
         this.catalogueId = catalogueId;
-        UnitOfWork.getInstance().registerNew(this);
     }
 
     public Room(int id, String number, int catalogueId) {
@@ -41,7 +40,6 @@ public class Room {
 
     public void setNumber(String number) {
         this.number = number;
-        UnitOfWork.getInstance().registerDirty(this);
     }
 
     public int getCatalogueId() {
@@ -53,7 +51,6 @@ public class Room {
 
     public void setCatalogueId(int catalogueId) {
         this.catalogueId = catalogueId;
-        UnitOfWork.getInstance().registerDirty(this);
     }
 
     private void load() {

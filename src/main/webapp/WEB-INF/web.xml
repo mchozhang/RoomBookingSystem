@@ -13,6 +13,16 @@
         <url-pattern>/loginServlet</url-pattern>
     </servlet-mapping>
 
+    <!--logout-->
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>com.booker.servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logoutServlet</url-pattern>
+    </servlet-mapping>
+
     <!--hotel list-->
     <servlet>
         <servlet-name>HotelList</servlet-name>

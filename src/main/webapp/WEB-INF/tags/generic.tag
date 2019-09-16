@@ -1,4 +1,5 @@
 <%@tag description="template" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="header" fragment="true" %>
 <%@attribute name="footer" fragment="true" %>
 <html>
@@ -21,6 +22,22 @@
 <div id="page-header">
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Hotel Booker</a>
+        <div>
+        <c:choose>
+            <c:when test="${user != null}">
+                <c:choose>
+                    <c:when test='${user.getRole().equals("staff")}'>
+                        <a class="navbar-text" style="color: #fdfdfe">${user.getHotelName()}</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="navbar-text" style="color: #fdfdfe">${user.getFullName()}</a>
+                    </c:otherwise>
+                </c:choose>
+
+                <button class="btn btn-sm btn-dark" onclick="window.document.location = '/logoutServlet'">Log out</button>
+            </c:when>
+        </c:choose>
+        </div>
     </nav>
 </div>
 <div id="body" style="margin: 50px;">

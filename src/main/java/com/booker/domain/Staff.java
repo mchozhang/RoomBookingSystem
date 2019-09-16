@@ -13,7 +13,6 @@ public class Staff extends User {
         super();
         this.role = "staff";
         this.hotelId = hotelId;
-        UnitOfWork.getInstance().registerNew(this);
     }
 
     public Staff(int id, int hotelId) {
@@ -33,7 +32,10 @@ public class Staff extends User {
 
     public void setHotelId(int hotelId) {
         this.hotelId = hotelId;
-        UnitOfWork.getInstance().registerDirty(this);
+    }
+
+    public String getHotelName() {
+        return Hotel.getHotelById(hotelId).getName();
     }
 
     private void load() {

@@ -28,6 +28,7 @@ public class HotelServlet extends HttpServlet {
 
         // acquire login user from session
         User user = (User) request.getSession().getAttribute("user");
+        request.setAttribute("user", user);
         String page = "/hotel.jsp";
         if (user instanceof Staff) {
             Staff staff = (Staff) user;

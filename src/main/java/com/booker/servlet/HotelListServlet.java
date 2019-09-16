@@ -24,6 +24,7 @@ public class HotelListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User)request.getSession().getAttribute("user");
+        request.setAttribute("user", user);
         if (user instanceof Customer) {
             System.out.println("customer");
         } else if (user instanceof Staff){

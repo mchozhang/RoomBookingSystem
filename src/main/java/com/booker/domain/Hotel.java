@@ -5,7 +5,6 @@ import com.booker.database.UnitOfWork;
 import com.booker.database.impl.CatalogueMapperImpl;
 import com.booker.database.impl.HotelMapperImpl;
 import com.booker.database.impl.ServiceMapperImpl;
-import com.sun.tools.corba.se.idl.constExpr.Equal;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -45,7 +44,6 @@ public class Hotel {
     public Hotel(String name, Location location) {
         this.name = name;
         this.location = location;
-        UnitOfWork.getInstance().registerNew(this);
     }
 
     public Hotel(int id, String name, Location location) {
@@ -119,7 +117,6 @@ public class Hotel {
 
     public void setName(String name) {
         this.name = name;
-        UnitOfWork.getInstance().registerDirty(this);
     }
 
     public Location getLocation() {
@@ -131,7 +128,6 @@ public class Hotel {
 
     public void setLocation(Location location) {
         this.location = location;
-        UnitOfWork.getInstance().registerDirty(this);
     }
 
     public String getSuburb() {

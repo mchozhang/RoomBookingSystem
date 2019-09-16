@@ -30,7 +30,6 @@ public class Catalogue {
         this.hotelId = hotelId;
         this.description = des;
         this.price = price;
-        UnitOfWork.getInstance().registerNew(this);
     }
 
     public List<Room> getRooms() {
@@ -60,7 +59,6 @@ public class Catalogue {
 
     public void setDescription(String description) {
         this.description = description;
-        UnitOfWork.getInstance().registerDirty(this);
     }
 
     public String getName() {
@@ -71,7 +69,6 @@ public class Catalogue {
     }
 
     public void setName(String name) {
-        UnitOfWork.getInstance().registerDirty(this);
         this.name = name;
     }
 
@@ -84,7 +81,6 @@ public class Catalogue {
 
     public void setPrice(Float price) {
         this.price = price;
-        UnitOfWork.getInstance().registerDirty(this);
     }
 
     public int getHotelId() {
@@ -96,7 +92,6 @@ public class Catalogue {
 
     public void setHotelId(int hotelId) {
         this.hotelId = hotelId;
-        UnitOfWork.getInstance().registerDirty(this);
     }
 
     private void load() {
@@ -123,7 +118,6 @@ public class Catalogue {
             for (String number : rooms) {
                 roomMapper.insert(new Room(number, catalogueId));
             }
-            UnitOfWork.getInstance().clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,9 +129,9 @@ public class Catalogue {
             int catalogueId = Integer.parseInt(id);
             Catalogue catalogue = IdentityMap.getCatalogue(catalogueId);
             catalogue.setName(name);
-            catalogue.setDescription(name);
+            catalogue.setDescription(des);
             catalogue.setPrice(price);
-            CatalogueMapperImpl mapper = new CatalogueMapperImpl();
+            UnitOfWork.getInstance().registerDirty(catalogue);
 
             List<Room> originalRooms = catalogue.getRooms();
             List<String> originalRoomNumbers = Arrays.asList(catalogue.getRoomNumberStr().split(","));
@@ -153,6 +147,7 @@ public class Catalogue {
             for (String newRoomNumber: newRoomNumbers) {
                 if (!originalRoomNumbers.contains(newRoomNumber)) {
                     Room room = new Room(newRoomNumber, catalogueId);
+                    UnitOfWork.getInstance().registerNew(room);
                 }
             }
             UnitOfWork.getInstance().commit();

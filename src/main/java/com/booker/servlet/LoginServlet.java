@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet {
         User user = User.authenticate(username, password);
         if (user != null) {
             request.getSession().setAttribute("user", user);
+            request.setAttribute("user", user);
             if (user instanceof Customer) {
                 // redirect customer to hotel list page
                 response.sendRedirect("/hotelListServlet");
