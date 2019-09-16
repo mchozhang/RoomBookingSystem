@@ -39,7 +39,7 @@
                 <div class="card" style="margin-top: 20px">
                     <div class="card-body">
                         <h5 class="card-title">${catalogue.getName()}</h5>
-                        <p class="card-text">${catalogue.getDescription()}</p>
+                        <p class="card-text" id="cat-des-${catalogue.getId()}">${catalogue.getDescription()}</p>
                         <p class="card-text">price: $${catalogue.getPrice()}</p>
 
                         <div class="btn-group" role="group" aria-label="Basic example">
@@ -47,7 +47,7 @@
                                 <input name="deleteId" value="${catalogue.getId()}" hidden>
                                 <button class="btn btn-primary"
                                         type="button"
-                                        onclick="editCatalogue('${catalogue.getId()}', '${catalogue.getName()}', '${catalogue.getDescription()}', '${catalogue.getPrice()}', '${catalogue.getRoomNumberStr()}')"
+                                        onclick="editCatalogue('${catalogue.getId()}', '${catalogue.getName()}', '${catalogue.getPrice()}', '${catalogue.getRoomNumberStr()}')"
                                         data-toggle="modal"
                                         data-target="#edit-catalogue-modal">
                                     Edit
@@ -225,11 +225,13 @@
     function addCatalogues(hotelId) {
 
     }
+    // function editCatalogue(id, name, price) {
 
-    function editCatalogue(id, name, des, price, rooms) {
+    function editCatalogue(id, name, price, rooms) {
         $('#edit-table tbody tr').remove();
         $('#edit-id').val(id);
         $('#edit-catalogue-name').val(name);
+        let des = $('#cat-des-' + id).text();
         $('#edit-catalogue-des').val(des);
         $('#edit-catalogue-price').val(price);
 
