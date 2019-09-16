@@ -49,7 +49,8 @@
                                         type="button"
                                         onclick="editCatalogue('${catalogue.getId()}', '${catalogue.getName()}', '${catalogue.getDescription()}', '${catalogue.getPrice()}', '${catalogue.getRoomNumberStr()}')"
                                         data-toggle="modal"
-                                        data-target="#edit-catalogue-modal">Edit
+                                        data-target="#edit-catalogue-modal">
+                                    Edit
                                 </button>
                                 <button type="submit" class="btn btn-danger">Remove</button>
                             </form>
@@ -176,7 +177,7 @@
                                 <input type="number" class="form-control" id="edit-catalogue-price" name="editPrice">
                             </div>
 
-                                <%--room edit--%>
+                            <%--room edit--%>
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-8">
@@ -222,8 +223,7 @@
     }
 
     function addCatalogues(hotelId) {
-        console.log("edit catalogues ");
-        console.log(hotelId);
+
     }
 
     function editCatalogue(id, name, des, price, rooms) {
@@ -232,6 +232,10 @@
         $('#edit-catalogue-name').val(name);
         $('#edit-catalogue-des').val(des);
         $('#edit-catalogue-price').val(price);
+
+        if( rooms === '') {
+            return;
+        }
 
         let numbers = rooms.split(',');
 

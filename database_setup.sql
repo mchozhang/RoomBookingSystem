@@ -68,7 +68,7 @@ insert into hotels_services (hotelId, serviceId) values (2, 5);
 create table catalogues
 (
     id      serial primary key,
-    name    varchar(30),
+    name    varchar(50),
     description varchar(1024),
     hotelId integer references hotels (id),
     price   float

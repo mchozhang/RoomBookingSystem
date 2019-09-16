@@ -39,6 +39,9 @@ public class Catalogue {
 
     public String getRoomNumberStr() {
         List<Room> rooms = getRooms();
+        if (rooms.size() == 0) {
+            return "";
+        }
         String[] roomNumberList = new String[rooms.size()];
         for (int i = 0; i < rooms.size(); i++) {
             roomNumberList[i] = rooms.get(i).getNumber();
