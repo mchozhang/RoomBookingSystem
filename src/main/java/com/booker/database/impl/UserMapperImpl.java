@@ -1,8 +1,7 @@
 package com.booker.database.impl;
 
-import com.booker.database.HotelMapper;
+import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
-import com.booker.database.UserMapper;
 import com.booker.domain.Customer;
 import com.booker.domain.Staff;
 import com.booker.domain.User;
@@ -10,11 +9,21 @@ import com.booker.domain.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserMapperImpl implements UserMapper {
+public class UserMapperImpl implements DataMapper {
     private QueryExecutor executor;
 
     public UserMapperImpl() {
         executor = QueryExecutor.getInstance();
+    }
+
+    public ResultSet selectRowById(int id) {
+        try {
+            String sql = "select * from users where id = ?";
+            return executor.getResultSet(sql, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public User findUserById(int id) {
@@ -38,8 +47,7 @@ public class UserMapperImpl implements UserMapper {
 
             ResultSet rs = executor.getResultSet(sql, username, password);
             if (rs.next()) {
-                User user = createEntity(rs);
-                return user;
+                return createEntity(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,20 +55,17 @@ public class UserMapperImpl implements UserMapper {
         return null;
     }
 
-    public User createEntity(ResultSet rs) {
+    private User createEntity(ResultSet rs) {
         try {
             String role = rs.getString("role");
+            int id = rs.getInt("id");
             if (role.equals("customer")){
-                Customer customer = new Customer();
-                customer.setId(rs.getInt("id"));
-                customer.setFullName(rs.getString("full_name"));
+                String fullName = rs.getString("full_name");
+                Customer customer = new Customer(id, fullName);
                 return customer;
             } else if (role.equals("staff")) {
-                Staff staff = new Staff();
-                staff.setId((rs.getInt("id")));
                 int hotelId = rs.getInt("hotelId");
-                HotelMapper mapper = new HotelMapperImpl();
-                staff.setHotel(mapper.findHotelById(hotelId));
+                Staff staff = new Staff(id, hotelId);
                 return staff;
             }
         } catch (SQLException e) {
@@ -69,4 +74,15 @@ public class UserMapperImpl implements UserMapper {
         return null;
     }
 
+    public int insert(Object user){
+        return 0;
+    }
+
+    public int update(Object user){
+        return 0;
+    }
+
+    public void delete(Object user){
+
+    }
 }

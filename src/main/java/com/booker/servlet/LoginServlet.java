@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
             } else if(user instanceof Staff) {
                 // redirect staff to his hotel page
                 Staff staff = (Staff)user;
-                response.sendRedirect("/hotelServlet?id=" + staff.getHotel().getId());
+                response.sendRedirect("/hotelServlet?id=" + staff.getHotelId());
             }
         } else {
             request.setAttribute("errorMessage", "Either username or password is wrong.");

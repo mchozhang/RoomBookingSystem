@@ -1,7 +1,7 @@
 package com.booker.database.impl;
 
+import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
-import com.booker.database.ServiceMapper;
 import com.booker.domain.Service;
 
 import java.sql.ResultSet;
@@ -9,11 +9,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceMapperImpl implements ServiceMapper {
+public class ServiceMapperImpl implements DataMapper {
     private QueryExecutor executor;
 
     public ServiceMapperImpl(){
         executor = QueryExecutor.getInstance();
+    }
+
+    public ResultSet selectRowById(int id) {
+        try {
+            String sql = "select * from services where id = ?";
+            return executor.getResultSet(sql, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<Service> findServicesByHotelId(int id) {
@@ -33,14 +43,68 @@ public class ServiceMapperImpl implements ServiceMapper {
         return null;
     }
 
-    private Service createEntity(ResultSet rs) {
-        Service service = new Service();
+    public Service findServiceByName(String name) {
         try {
-            service.setId(rs.getInt("id"));
-            service.setName(rs.getString("name"));
+            String sql = "select * from services where name = ?";
+            ResultSet rs = executor.getResultSet(sql, name);
+            if (rs.next()) {
+                return createEntity(rs);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return service;
+        return null;
+    }
+
+    public void addHotelServiceMap(int hotelId, String serviceName) {
+        Service service = findServiceByName(serviceName);
+        int serviceId = 0;
+        if (service == null) {
+            service = new Service(serviceName);
+            serviceId = insert(service);
+        } else {
+            serviceId = service.getId();
+        }
+        insertHotelServiceMap(hotelId, serviceId);
+    }
+
+    public void removeHotelServiceMap(int hotelId, int serviceId) {
+        String sql = "delete from hotels_services where hotelId = ? and serviceId = ?";
+        executor.executeStatement(sql, hotelId, serviceId);
+    }
+
+    public void insertHotelServiceMap(int hotelId, int serviceId) {
+        String sql = "insert into hotels_services (hotelId, serviceId) values (?,?)";
+        executor.executeStatement(sql, hotelId, serviceId);
+    }
+
+
+    private Service createEntity(ResultSet rs) {
+        try {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            return new Service(id, name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int insert(Object obj) {
+        Service service = (Service) obj;
+        String sql = "insert into services (name) values (?)";
+        return executor.executeStatement(sql, service.getName());
+    }
+
+    public int update(Object obj) {
+        Service service = (Service) obj;
+        String sql = "update services set name = ? where id = ?";
+        return executor.executeStatement(sql, service.getName(), service.getId());
+    }
+
+    public void delete(Object obj) {
+        Service service = (Service) obj;
+        String sql = "delete from services where id = ?";
+        executor.executeStatement(sql, service.getId());
     }
 }

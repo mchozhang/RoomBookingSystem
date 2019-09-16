@@ -1,21 +1,31 @@
 package com.booker.database.impl;
 
-import com.booker.database.HotelMapper;
+import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
+import com.booker.domain.Catalogue;
 import com.booker.domain.Hotel;
 import com.booker.domain.Location;
 
-import javax.management.relation.Role;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelMapperImpl implements HotelMapper {
+public class HotelMapperImpl implements DataMapper {
     private QueryExecutor executor;
 
     public HotelMapperImpl(){
         executor = QueryExecutor.getInstance();
+    }
+
+    public ResultSet selectRowById(int id) {
+        try {
+            String sql = "select * from hotels where id = ?";
+            return executor.getResultSet(sql, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<Hotel> findAllHotels() {
@@ -38,8 +48,7 @@ public class HotelMapperImpl implements HotelMapper {
             String sql = "select * from hotels where id = ?";
             ResultSet rs = executor.getResultSet(sql, id);
             if (rs.next()) {
-                Hotel hotel = createEntity(rs);
-                return hotel;
+                return createEntity(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,8 +61,7 @@ public class HotelMapperImpl implements HotelMapper {
             String sql = "select * from hotels where name = ?";
             ResultSet rs = executor.getResultSet(sql, name);
             if (rs.next()) {
-                Hotel hotel = createEntity(rs);
-                return hotel;
+                return createEntity(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,16 +70,32 @@ public class HotelMapperImpl implements HotelMapper {
     }
 
     private Hotel createEntity(ResultSet rs) {
-        Hotel hotel = new Hotel();
         try {
-            hotel.setId(rs.getInt("id"));
-            hotel.setName(rs.getString("name"));
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
             Location location = new Location(rs.getString("suburb"), rs.getString("address"));
-            hotel.setLocation(location);
+            return new Hotel(id, name, location);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return hotel;
+        return null;
     }
 
+    public int insert(Object obj) {
+        Hotel hotel = (Hotel) obj;
+        String sql = "insert into hotels (name, suburb, address) values (?,?,?)";
+        return executor.executeStatement(sql, hotel.getName(), hotel.getSuburb(), hotel.getAddress());
+    }
+
+    public int update(Object obj) {
+        Hotel hotel = (Hotel) obj;
+        String sql = "update hotels set name = ?, suburb = ?, address = ? where id = ?";
+        return executor.executeStatement(sql, hotel.getName(), hotel.getSuburb(), hotel.getAddress(), hotel.getId());
+    }
+
+    public void delete(Object obj) {
+        Hotel hotel = (Hotel) obj;
+        String sql = "delete from hotels where id = ?";
+        executor.executeStatement(sql, hotel.getId());
+    }
 }

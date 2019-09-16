@@ -26,4 +26,14 @@ public class Location {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Location) {
+            Location location = (Location) obj;
+            return location.getAddress().equals(address) && location.getSuburb().equals(suburb);
+        } else {
+            return false;
+        }
+    }
 }

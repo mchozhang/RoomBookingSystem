@@ -1,7 +1,7 @@
 package com.booker.domain;
 
-import com.booker.database.UserMapper;
 import com.booker.database.impl.UserMapperImpl;
+
 public abstract class User {
     protected int id;
     protected String username;
@@ -15,9 +15,8 @@ public abstract class User {
      * @return authenticated user object, return null if failed to authenticate
      */
     public static User authenticate(String username, String password) {
-        UserMapper mapper = new UserMapperImpl();
-        User user = mapper.findUserByUsernamePassword(username, password);
-        return user;
+        UserMapperImpl mapper = new UserMapperImpl();
+        return mapper.findUserByUsernamePassword(username, password);
     }
 
     public int getId() {
@@ -29,6 +28,9 @@ public abstract class User {
     }
 
     public String getUsername() {
+        if (username == null) {
+            load();
+        }
         return username;
     }
 
@@ -37,6 +39,9 @@ public abstract class User {
     }
 
     public String getPassword() {
+        if (password == null) {
+            load();
+        }
         return password;
     }
 
@@ -45,6 +50,9 @@ public abstract class User {
     }
 
     public String getRole() {
+        if (role == null) {
+            load();
+        }
         return role;
     }
 
@@ -52,4 +60,7 @@ public abstract class User {
         this.role = role;
     }
 
+    private void load() {
+
+    }
 }

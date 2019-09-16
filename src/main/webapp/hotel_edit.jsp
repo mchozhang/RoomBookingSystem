@@ -42,11 +42,18 @@
                         <p class="card-text">${catalogue.getDescription()}</p>
                         <p class="card-text">price: $${catalogue.getPrice()}</p>
 
-                        <button class="btn btn-primary"
-                                onclick="editCatalogue('${catalogue.getId()}', '${catalogue.getName()}', '${catalogue.getDescription()}', '${catalogue.getPrice()}', '${catalogue.getRoomNumberStr()}')"
-                                data-toggle="modal"
-                                data-target="#edit-catalogue-modal">Edit
-                        </button>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <form action="/hotelServlet?id=${hotel.getId()}" method="post">
+                                <input name="deleteId" value="${catalogue.getId()}" hidden>
+                                <button class="btn btn-primary"
+                                        type="button"
+                                        onclick="editCatalogue('${catalogue.getId()}', '${catalogue.getName()}', '${catalogue.getDescription()}', '${catalogue.getPrice()}', '${catalogue.getRoomNumberStr()}')"
+                                        data-toggle="modal"
+                                        data-target="#edit-catalogue-modal">Edit
+                                </button>
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </c:forEach>
@@ -57,7 +64,7 @@
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form action="${pageContext.request.contextPath}/hotelServlet" method="post">
+                    <form action="/hotelServlet?id=${hotel.getId()}" method="post">
                         <div class="modal-header">
                             <h5 class="modal-title" id="serviceModalLabel">Services</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -83,7 +90,7 @@
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form action="/hotelServlet" method="post">
+                    <form action="/hotelServlet?id=${hotel.getId()}" method="post">
                         <div class="modal-header">
                             <h5 class="modal-title" id="add-catalogue-modal-label">Room Catalogues</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -105,14 +112,15 @@
                                 <input type="number" class="form-control" id="add-catalogue-price" name="addPrice">
                             </div>
 
-                            <%--room edit--%>
+                                <%--room edit--%>
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-8">
                                         <label>Rooms</label>
                                     </div>
                                     <div class="col-sm-4">
-                                        <button type="button" class="btn btn-info" id="add-rooms" onclick="addTableAddRow()">
+                                        <button type="button" class="btn btn-info" id="add-rooms"
+                                                onclick="addTableAddRow()">
                                             <i class="fa fa-plus"></i>Add Room
                                         </button>
                                     </div>
@@ -145,7 +153,7 @@
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form action="/hotelServlet" method="post">
+                    <form action="/hotelServlet?id=${hotel.getId()}" method="post">
                         <div class="modal-header">
                             <h5 class="modal-title" id="edit-catalogue-modal-label">Room Catalogues</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -153,7 +161,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <input id="edit-id" name="edit-id" hidden>
+                            <input id="edit-id" name="editId" hidden>
                             <div class="form-group">
                                 <label for="edit-catalogue-name">Catalogue Name</label>
                                 <input type="text" class="form-control" id="edit-catalogue-name" name="editName">
@@ -165,17 +173,18 @@
                             </div>
                             <div class="form-group">
                                 <label for="edit-catalogue-price">Price</label>
-                                <input type="number" class="form-control" id="edit-catalogue-price" name="addPrice">
+                                <input type="number" class="form-control" id="edit-catalogue-price" name="editPrice">
                             </div>
 
-                            <%--room edit--%>
+                                <%--room edit--%>
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-8">
                                         <label>Rooms</label>
                                     </div>
                                     <div class="col-sm-4">
-                                        <button type="button" class="btn btn-info" id="edit-rooms" onclick="editTableAddRow()">
+                                        <button type="button" class="btn btn-info" id="edit-rooms"
+                                                onclick="editTableAddRow()">
                                             <i class="fa fa-plus"></i>Add Room
                                         </button>
                                     </div>
@@ -219,6 +228,7 @@
 
     function editCatalogue(id, name, des, price, rooms) {
         $('#edit-table tbody tr').remove();
+        $('#edit-id').val(id);
         $('#edit-catalogue-name').val(name);
         $('#edit-catalogue-des').val(des);
         $('#edit-catalogue-price').val(price);
@@ -229,6 +239,7 @@
             addRoom("editRooms", "edit-table", number);
         }
     }
+
     // Append table with add row form on add new button click
     function addTableAddRow() {
         addRoom("addRooms", "add-table", "");
@@ -239,16 +250,13 @@
     }
 
     function addRoom(name, table, value) {
-        console.log("add room");
-        console.log(value);
         let actions = '<a class="delete" title="Delete" data-toggle="tooltip"><i class="fas fa-trash"></i></a>';
         let row = '<tr>' +
-            '<td><input type="text" class="form-control" name="' + name +'" value="' + value +'"></td>' +
+            '<td><input type="text" class="form-control" name="' + name + '" value="' + value + '"></td>' +
             '<td>' + actions + '</td>' +
             '</tr>';
         $("#" + table).append(row);
     }
-
 
     // Delete row on delete button click
     $(document).on("click", ".delete", function () {

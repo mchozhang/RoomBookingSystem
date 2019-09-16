@@ -54,7 +54,7 @@ public class QueryExecutor {
      *
      * @param query query sql
      * @param args arguments
-     * @return if if request is insert
+     * @return if request is insert
      */
     public int executeStatement(String query, Object... args) {
         try {
