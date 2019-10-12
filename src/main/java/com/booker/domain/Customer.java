@@ -21,14 +21,7 @@ public class Customer extends User {
         IdentityMap.putUser(id, this);
     }
 
-    public static User getUserBy(int id) {
-        User user = IdentityMap.getUser(id);
-        if (user == null) {
-            UserMapperImpl mapper = new UserMapperImpl();
-            user = mapper.findUserById(id);
-        }
-        return user;
-    }
+
 
     public String getFullName() {
         if (fullName == null) {

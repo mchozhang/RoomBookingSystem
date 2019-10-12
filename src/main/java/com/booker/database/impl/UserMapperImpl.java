@@ -41,6 +41,20 @@ public class UserMapperImpl implements DataMapper {
         return null;
     }
 
+    public User findUserByUsername(String username) {
+        try {
+            String sql = "select * from users where username = ?";
+
+            ResultSet rs = executor.getResultSet(sql, username);
+            if (rs.next()) {
+                return createEntity(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public User findUserByUsernamePassword(String username, String password) {
         try {
             String sql = "select * from users where username = ? and password = ?";
@@ -59,13 +73,19 @@ public class UserMapperImpl implements DataMapper {
         try {
             String role = rs.getString("role");
             int id = rs.getInt("id");
+            String username = rs.getString("username");
+            String password = rs.getString("password");
             if (role.equals("customer")){
                 String fullName = rs.getString("full_name");
                 Customer customer = new Customer(id, fullName);
+                customer.setUsername(username);
+                customer.setPassword(password);
                 return customer;
             } else if (role.equals("staff")) {
                 int hotelId = rs.getInt("hotelId");
                 Staff staff = new Staff(id, hotelId);
+                staff.setUsername(username);
+                staff.setPassword(password);
                 return staff;
             }
         } catch (SQLException e) {

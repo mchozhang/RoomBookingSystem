@@ -1,7 +1,7 @@
 package com.booker.servlet;
 
 import com.booker.domain.*;
-
+import com.booker.util.AppSession;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,18 +26,19 @@ public class HotelServlet extends HttpServlet {
             return;
         }
 
-        // acquire login user from session
-        User user = (User) request.getSession().getAttribute("user");
-        request.setAttribute("user", user);
-        String page = "/hotel.jsp";
-        if (user instanceof Staff) {
-            Staff staff = (Staff) user;
-            if (staff.getHotelId() == hotelId) {
-                page = "/hotel_edit.jsp";
-            }
-        } else if (user == null) {
+        if (!AppSession.isAuthenticated()){
             response.sendRedirect("/index.jsp");
             return;
+        }
+
+        // acquire login user from session
+        User user = AppSession.getUser();
+        String view = "/hotel.jsp";
+        if (AppSession.hasRole(AppSession.STAFF_ROLE)) {
+            Staff staff = (Staff) user;
+            if (staff.getHotelId() == hotelId) {
+                view = "/hotel_edit.jsp";
+            }
         }
 
         // acquire hotel information
@@ -55,16 +56,20 @@ public class HotelServlet extends HttpServlet {
         }
 
         // set attributes
-        request.setAttribute("user", user);
         request.setAttribute("hotel", hotel);
         request.setAttribute("services", services);
         request.setAttribute("serviceStr", servicesStr);
         request.setAttribute("catalogues", catalogues);
         request.setAttribute("rooms", rooms);
-        request.getRequestDispatcher(page).forward(request, response);
+        request.getRequestDispatcher(view).forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!AppSession.isAuthenticated() || !AppSession.hasRole(AppSession.STAFF_ROLE)) {
+            response.sendRedirect("/loginServlet");
+            return;
+        }
+
         // acquire hotel id from parameters
         int hotelId = 0;
         try {
@@ -112,6 +117,5 @@ public class HotelServlet extends HttpServlet {
             Catalogue.deleteCatalogue(deleteId);
             doGet(request, response);
         }
-
     }
 }

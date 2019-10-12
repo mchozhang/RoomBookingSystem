@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="header" fragment="true" %>
 <%@attribute name="footer" fragment="true" %>
+<%@ tag import="com.booker.util.AppSession" %>
 <html>
 <head>
     <%--    <title>${title}</title>--%>
@@ -24,16 +25,16 @@
 <body>
 <div id="page-header">
     <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Hotel Booker</a>
+        <a class="navbar-brand" href="/hotelListServlet">Hotel Booker</a>
         <div>
             <c:choose>
-                <c:when test="${user != null}">
+                <c:when test="${AppSession.isAuthenticated()}">
                     <c:choose>
-                        <c:when test='${user.getRole().equals("staff")}'>
-                            <a class="navbar-text" style="color: #fdfdfe">${user.getHotelName()}</a>
+                        <c:when test='${AppSession.getUser().getRole().equals("staff")}'>
+                            <a class="navbar-text" style="color: #fdfdfe">${AppSession.getUser().getHotelName()}</a>
                         </c:when>
                         <c:otherwise>
-                            <a class="navbar-text" style="color: #fdfdfe">${user.getFullName()}</a>
+                            <a class="navbar-text" style="color: #fdfdfe">${AppSession.getUser().getFullName()}</a>
                         </c:otherwise>
                     </c:choose>
 

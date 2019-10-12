@@ -43,7 +43,7 @@ public class Booking {
         this.endDate = endDate;
         this.status = status;
 
-        Customer user = (Customer)Customer.getUserBy(userId);
+        Customer user = (Customer)Customer.getUserById(userId);
         Room room = Room.getRoomById(roomId);
         Catalogue catalogue = Catalogue.getCatalogueById(room.getCatalogueId());
         Hotel hotel = Hotel.getHotelById(catalogue.getHotelId());

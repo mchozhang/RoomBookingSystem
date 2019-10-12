@@ -150,12 +150,29 @@ insert into rooms (catalogueId, number)
 values (3, '303');
 insert into rooms (catalogueId, number)
 values (3, '304');
+insert into rooms (catalogueId, number)
+values (4, 'A101');
+insert into rooms (catalogueId, number)
+values (4, 'A102');
+insert into rooms (catalogueId, number)
+values (4, 'A103');
+insert into rooms (catalogueId, number)
+values (5, 'B501');
+insert into rooms (catalogueId, number)
+values (5, 'B502');
+insert into rooms (catalogueId, number)
+values (5, 'B503');
+insert into rooms (catalogueId, number)
+values (6, 'C201');
+insert into rooms (catalogueId, number)
+values (6, 'C202');
+
 
 create table bookings
 (
     id        serial primary key,
     userId    integer references users (id),
-    roomId      integer references rooms (id),
+    roomId    integer references rooms (id),
     startDate date,
     endDate   date,
     status    varchar(50),

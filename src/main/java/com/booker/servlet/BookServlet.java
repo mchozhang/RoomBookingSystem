@@ -1,6 +1,7 @@
 package com.booker.servlet;
 
 import com.booker.domain.*;
+import com.booker.util.AppSession;
 import com.booker.util.DateUtil;
 
 import javax.servlet.ServletException;
@@ -16,9 +17,12 @@ public class BookServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int roomId = 0;
-        int catalogueId = 0;
+        if (!AppSession.isAuthenticated() || !AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
+            response.sendRedirect("/loginServlet");
+            return;
+        }
 
+        // parse start, end date params
         String startDate = request.getParameter("sd");
         String endDate = request.getParameter("ed");
         if (startDate != null && endDate != null) {
@@ -29,36 +33,44 @@ public class BookServlet extends HttpServlet {
             endDate = DateUtil.getTomorrow();
         }
 
+
+        // parse room id, catalogue id params
+        int roomId;
+        int catalogueId;
         try {
             catalogueId = Integer.parseInt(request.getParameter("id"));
             roomId = Integer.parseInt(request.getParameter("room"));
         } catch (Exception e) {
-            // no room id found
             request.getRequestDispatcher("/hotelListServlet").forward(request, response);
             return;
         }
 
         // acquire login user from session
-        User user = (User) request.getSession().getAttribute("user");
-        request.setAttribute("user", user);
-        String page = "/hotel_book.jsp";
-        if (user instanceof Staff) {
-            page = "/hotel.jsp";
-        } else if (user == null) {
-            response.sendRedirect("/index.jsp");
-            return;
-        }
-
+        User user = AppSession.getUser();
         boolean result = Booking.createBooking(user.getId(), catalogueId, roomId, startDate, endDate);
-        if (result) {
-            page = "/bookingsServlet";
-        }
-        request.getRequestDispatcher(page).forward(request, response);
+//        if (result) {
+//            response.sendRedirect("/bookingsServlet");
+//            System.out.println("444");
+//
+//            return;
+//        } else {
+//            doGet(request, response);
+//        }
+        response.setStatus(200);
+        response.getWriter().write("hello");
+        response.getWriter().close();
+        return;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // acquire catalogue id from parameters
-        int catalogueId = 0;
+        // check authentication and authorization
+        if (!AppSession.isAuthenticated() || !AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
+            response.sendRedirect("/loginServlet");
+            return;
+        }
+
+        // acquire catalogue id, date from parameters
+        int catalogueId;
         String startDate = request.getParameter("sd");
         String endDate = request.getParameter("ed");
         if (startDate != null && endDate != null) {
@@ -78,15 +90,8 @@ public class BookServlet extends HttpServlet {
         }
 
         // acquire login user from session
-        User user = (User) request.getSession().getAttribute("user");
-        request.setAttribute("user", user);
-        String page = "/hotel_book.jsp";
-        if (user instanceof Staff) {
-            page = "/hotel.jsp";
-        } else if (user == null) {
-            response.sendRedirect("/index.jsp");
-            return;
-        }
+        User user = AppSession.getUser();
+        String view = "/hotel_book.jsp";
 
         // acquire catalogue information
         Catalogue catalogue = Catalogue.getCatalogueById(catalogueId);
@@ -94,12 +99,11 @@ public class BookServlet extends HttpServlet {
         List<Room> rooms = catalogue.getRooms();
 
         // set attributes
-        request.setAttribute("user", user);
         request.setAttribute("catalogue", catalogue);
         request.setAttribute("hotel", hotel);
         request.setAttribute("rooms", rooms);
         request.setAttribute("startDate", startDate);
         request.setAttribute("endDate", endDate);
-        request.getRequestDispatcher(page).forward(request, response);
+        request.getRequestDispatcher(view).forward(request, response);
     }
 }

@@ -3,6 +3,10 @@ package com.booker.servlet;
 import com.booker.domain.Customer;
 import com.booker.domain.Staff;
 import com.booker.domain.User;
+import com.booker.util.AppSession;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,20 +24,29 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = request.getServletPath();
+        // go to main page if logged in
+        if (AppSession.isAuthenticated()) {
+            if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
+                // redirect customer to hotel list page
+                response.sendRedirect("/hotelListServlet");
+            } else if(AppSession.hasRole(AppSession.STAFF_ROLE)) {
+                // redirect staff to his hotel page
+                Staff staff = (Staff)AppSession.getUser();
+                response.sendRedirect("/hotelServlet?id=" + staff.getHotelId());
+            }
+            return;
+        }
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         // handle user authentication
         User user = User.authenticate(username, password);
         if (user != null) {
-            request.getSession().setAttribute("user", user);
-            request.setAttribute("user", user);
-            if (user instanceof Customer) {
+            if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 // redirect customer to hotel list page
                 response.sendRedirect("/hotelListServlet");
-
-            } else if(user instanceof Staff) {
+            } else if(AppSession.hasRole(AppSession.STAFF_ROLE)) {
                 // redirect staff to his hotel page
                 Staff staff = (Staff)user;
                 response.sendRedirect("/hotelServlet?id=" + staff.getHotelId());

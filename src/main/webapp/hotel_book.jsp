@@ -23,35 +23,33 @@
                 <label>Price: $${catalogue.getPrice()}</label>
             </div>
 
-            <form action="/bookServlet" method="post">
-                <div style="width: 100%; margin-top: 20px">
-                    <label>Date Range</label>
-                    <input type="text" id="date-picker" name="date-range" style="width: 200px"/>
-                </div>
+            <div style="width: 100%; margin-top: 20px">
+                <label>Date Range</label>
+                <input type="text" id="date-picker" name="date-range" style="width: 230px"/>
+            </div>
 
-                <div style="margin-top: 20px">
-                    <label> Available Rooms</label>
-                    <table class="table table-bordered room-table" id="table">
-                        <thead>
+            <div style="margin-top: 20px">
+                <label> Available Rooms</label>
+                <table class="table table-bordered room-table" id="table">
+                    <thead>
+                    <tr>
+                        <th>Room Number</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${rooms}" var="room">
                         <tr>
-                            <th>Room Number</th>
-                            <th>Actions</th>
+                            <td>${room.getNumber()}</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="book(${room.getId()})">Confirm Booking
+                                </button>
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${rooms}" var="room">
-                            <tr>
-                                <td>${room.getNumber()}</td>
-                                <td>
-                                    <button class="btn btn-primary" onclick="book(${room.getId()})">Confirm Booking
-                                    </button>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </jsp:body>
 
@@ -61,11 +59,15 @@
     let startDate = '${startDate}', endDate = '${endDate}';
     let today = new Date();
     let dd = today.getDate();
-    let mm = today.getMonth()+1; //January is 0!
+    let mm = today.getMonth() + 1; //January is 0!
     let yyyy = today.getFullYear();
-    if(dd<10){ dd='0'+dd }
-    if(mm<10){ mm='0'+mm }
-    today = yyyy +'-'+mm+'-'+ dd;
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+    today = yyyy + '-' + mm + '-' + dd;
 
     $('#date-picker').daterangepicker({
         startDate: startDate,
@@ -82,10 +84,21 @@
     });
 
     function book(roomId) {
+        console.log('book');
         let options = {
             url: '/bookServlet',
             type: 'post',
             data: 'sd=' + startDate + '&ed=' + endDate + '&room=' + roomId + '&id=${catalogue.getId()}',
+            success: function (responseText) {
+                console.log('111');
+                console.log(responseText);
+                // window.location.href = '/bookingsServlet';
+            },
+            error: function (responseText) {
+                console.log('222');
+                console.log(responseText);
+
+            }
         };
 
         $.ajax(options);

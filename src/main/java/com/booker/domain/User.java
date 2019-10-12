@@ -1,12 +1,32 @@
 package com.booker.domain;
 
+import com.booker.database.IdentityMap;
 import com.booker.database.impl.UserMapperImpl;
+import com.booker.util.AppSession;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 
 public abstract class User {
     protected int id;
     protected String username;
     protected String password;
     protected String role;
+
+    public static User getUserById(int id) {
+        User user = IdentityMap.getUser(id);
+        if (user == null) {
+            UserMapperImpl mapper = new UserMapperImpl();
+            user = mapper.findUserById(id);
+        }
+        return user;
+    }
+
+    public static User getUserByName(String username) {
+        UserMapperImpl mapper = new UserMapperImpl();
+        return mapper.findUserByUsername(username);
+    }
 
     /**
      * authenticate the username and password of an account
@@ -15,8 +35,19 @@ public abstract class User {
      * @return authenticated user object, return null if failed to authenticate
      */
     public static User authenticate(String username, String password) {
-        UserMapperImpl mapper = new UserMapperImpl();
-        return mapper.findUserByUsernamePassword(username, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        token.setRememberMe(true);
+        Subject currentUser = SecurityUtils.getSubject();
+
+        try {
+            currentUser.login(token);
+            User user = User.getUserByName(username);
+            AppSession.init(user);
+            return user;
+        } catch (UnknownAccountException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public int getId() {
