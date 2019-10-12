@@ -2,6 +2,7 @@ package com.booker.domain;
 
 import com.booker.database.IdentityMap;
 import com.booker.database.UnitOfWork;
+import com.booker.database.impl.CatalogueMapperImpl;
 import com.booker.database.impl.RoomMapperImpl;
 
 import java.sql.ResultSet;
@@ -21,6 +22,15 @@ public class Room {
         this.number = number;
         this.catalogueId = catalogueId;
         IdentityMap.putRoom(id, this);
+    }
+
+    static public Room getRoomById(int id) {
+        Room room = IdentityMap.getRoom(id);
+        if (room == null) {
+            RoomMapperImpl mapper = new RoomMapperImpl();
+            room = mapper.findRoomById(id);
+        }
+        return room;
     }
 
     public int getId() {

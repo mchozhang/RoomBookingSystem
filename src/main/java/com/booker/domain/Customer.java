@@ -1,9 +1,7 @@
 package com.booker.domain;
 
 import com.booker.database.IdentityMap;
-import com.booker.database.UnitOfWork;
 import com.booker.database.impl.UserMapperImpl;
-
 import java.sql.ResultSet;
 
 public class Customer extends User {
@@ -21,6 +19,15 @@ public class Customer extends User {
         this.role = "customer";
         this.fullName = fullName;
         IdentityMap.putUser(id, this);
+    }
+
+    public static User getUserBy(int id) {
+        User user = IdentityMap.getUser(id);
+        if (user == null) {
+            UserMapperImpl mapper = new UserMapperImpl();
+            user = mapper.findUserById(id);
+        }
+        return user;
     }
 
     public String getFullName() {

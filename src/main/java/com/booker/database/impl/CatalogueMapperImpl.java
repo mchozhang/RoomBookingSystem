@@ -3,6 +3,7 @@ package com.booker.database.impl;
 import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
 import com.booker.domain.Catalogue;
+import com.booker.domain.Hotel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,19 @@ public class CatalogueMapperImpl implements DataMapper {
 
     public CatalogueMapperImpl() {
         executor = QueryExecutor.getInstance();
+    }
+
+    public Catalogue findCatalogueById(int id) {
+        try {
+            String sql = "select * from catalogues where id = ?";
+            ResultSet rs = executor.getResultSet(sql, id);
+            if (rs.next()) {
+                return createEntity(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public ResultSet selectRowById(int id) {

@@ -16,6 +16,9 @@
           rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css"
           rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/resources/vendor/date-range-picker/daterangepicker.css"
+          rel="stylesheet"/>
+
     <link href="${pageContext.request.contextPath}/resources/css/home.css" rel="stylesheet">
 </head>
 <body>
@@ -23,20 +26,25 @@
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Hotel Booker</a>
         <div>
-        <c:choose>
-            <c:when test="${user != null}">
-                <c:choose>
-                    <c:when test='${user.getRole().equals("staff")}'>
-                        <a class="navbar-text" style="color: #fdfdfe">${user.getHotelName()}</a>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="navbar-text" style="color: #fdfdfe">${user.getFullName()}</a>
-                    </c:otherwise>
-                </c:choose>
+            <c:choose>
+                <c:when test="${user != null}">
+                    <c:choose>
+                        <c:when test='${user.getRole().equals("staff")}'>
+                            <a class="navbar-text" style="color: #fdfdfe">${user.getHotelName()}</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="navbar-text" style="color: #fdfdfe">${user.getFullName()}</a>
+                        </c:otherwise>
+                    </c:choose>
 
-                <button class="btn btn-sm btn-dark" onclick="window.document.location = '/logoutServlet'">Log out</button>
-            </c:when>
-        </c:choose>
+                    <button class="btn btn-sm btn-dark" onclick="window.document.location = '/bookingsServlet'">My
+                        Bookings
+                    </button>
+
+                    <button class="btn btn-sm btn-dark" onclick="window.document.location = '/logoutServlet'">Log out
+                    </button>
+                </c:when>
+            </c:choose>
         </div>
     </nav>
 </div>
@@ -51,6 +59,9 @@
 <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap-tagsinput/js/bootstrap-tagsinput.js"></script>
 <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/js/all.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/vendor/date-range-picker/moment.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/vendor/date-range-picker/daterangepicker.js"></script>
+
 
 <!-- Core plugin JavaScript-->
 <script src="${pageContext.request.contextPath}/resources/vendor/jquery-easing/jquery.easing.min.js"></script>

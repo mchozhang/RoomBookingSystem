@@ -42,7 +42,7 @@
                         <p class="card-text" id="cat-des-${catalogue.getId()}">${catalogue.getDescription()}</p>
                         <p class="card-text">price: $${catalogue.getPrice()}</p>
 
-                        <div class="btn-group" role="group" aria-label="Basic example">
+                        <div class="btn-group" role="group">
                             <form action="/hotelServlet?id=${hotel.getId()}" method="post">
                                 <input name="deleteId" value="${catalogue.getId()}" hidden>
                                 <button class="btn btn-primary"

@@ -2,9 +2,6 @@ package com.booker.database;
 
 import com.booker.database.impl.*;
 import com.booker.domain.*;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 

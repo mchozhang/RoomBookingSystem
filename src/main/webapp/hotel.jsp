@@ -44,8 +44,7 @@
 
 <script type="text/javascript">
     function bookClick(catalogueId) {
-        console.log("book on click " + catalogueId);
-        // window.location.href = '/bookingServlet?id=' + catalogueId;
+        window.location.href = '/bookServlet?id=' + catalogueId;
     }
 </script>
 

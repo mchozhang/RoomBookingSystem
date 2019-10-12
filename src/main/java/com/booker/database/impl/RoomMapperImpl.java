@@ -27,6 +27,19 @@ public class RoomMapperImpl implements DataMapper {
         return null;
     }
 
+    public Room findRoomById(int id) {
+        try {
+            String sql = "select * from rooms where id = ?";
+            ResultSet rs = executor.getResultSet(sql, id);
+            if (rs.next()) {
+                return createEntity(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Room> findRoomsByCatalogueId(int catalogueId) {
         try {
             String sql = "select id, catalogueId, number from rooms " +

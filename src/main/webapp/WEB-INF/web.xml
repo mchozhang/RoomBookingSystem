@@ -42,4 +42,24 @@
         <servlet-name>Hotel</servlet-name>
         <url-pattern>/hotelServlet</url-pattern>
     </servlet-mapping>
+
+    <!--book hotel-->
+    <servlet>
+        <servlet-name>Book</servlet-name>
+        <servlet-class>com.booker.servlet.BookServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Book</servlet-name>
+        <url-pattern>/bookServlet</url-pattern>
+    </servlet-mapping>
+
+    <!--bookings-->
+    <servlet>
+        <servlet-name>Bookings</servlet-name>
+        <servlet-class>com.booker.servlet.BookingsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Bookings</servlet-name>
+        <url-pattern>/bookingsServlet</url-pattern>
+    </servlet-mapping>
 </web-app>

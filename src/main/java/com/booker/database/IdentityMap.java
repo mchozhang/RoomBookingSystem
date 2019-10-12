@@ -11,6 +11,8 @@ public class IdentityMap {
     private static Map<Integer, Catalogue> catalogueMap = new HashMap<>();
     private static Map<Integer, Room> roomMap = new HashMap<>();
     private static Map<Integer, Service> serviceMap = new HashMap<>();
+    private static Map<Integer, Booking> bookingMap = new HashMap<>();
+
 
     public static Hotel getHotel(int id) {
         return hotelMap.get(id);
@@ -32,6 +34,10 @@ public class IdentityMap {
         return serviceMap.get(id);
     }
 
+    public static Booking getBooking(int id) {
+        return bookingMap.get(id);
+    }
+
     public static void putUser(int id, User user) {
         userMap.put(id, user);
     }
@@ -51,4 +57,9 @@ public class IdentityMap {
     public static void putRoom(int id, Room room) {
         roomMap.put(id, room);
     }
+
+    public static void putBooking(int id, Booking booking) {
+        bookingMap.put(id, booking);
+    }
+
 }

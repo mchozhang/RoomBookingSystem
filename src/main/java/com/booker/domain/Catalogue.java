@@ -3,6 +3,7 @@ package com.booker.domain;
 import com.booker.database.IdentityMap;
 import com.booker.database.UnitOfWork;
 import com.booker.database.impl.CatalogueMapperImpl;
+import com.booker.database.impl.HotelMapperImpl;
 import com.booker.database.impl.RoomMapperImpl;
 
 import java.sql.ResultSet;
@@ -15,6 +16,21 @@ public class Catalogue {
     private int hotelId;
     private String description;
     private Float price;
+
+    /**
+     * find catalogue by id
+     *
+     * @param id catalogue id
+     * @return catalogue object
+     */
+    public static Catalogue getCatalogueById(int id) {
+        Catalogue catalogue = IdentityMap.getCatalogue(id);
+        if (catalogue == null) {
+            CatalogueMapperImpl catalogueMapper = new CatalogueMapperImpl();
+            catalogue = catalogueMapper.findCatalogueById(id);
+        }
+        return catalogue;
+    }
 
     public Catalogue(int id, String name, int hotelId, String des, Float price) {
         this.id = id;
