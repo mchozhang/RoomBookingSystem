@@ -63,6 +63,16 @@
         <url-pattern>/bookingsServlet</url-pattern>
     </servlet-mapping>
 
+    <!--user info-->
+    <servlet>
+        <servlet-name>UserInfo</servlet-name>
+        <servlet-class>com.booker.servlet.UserInfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserInfo</servlet-name>
+        <url-pattern>/userInfoServlet</url-pattern>
+    </servlet-mapping>
+
     <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>
