@@ -2,6 +2,7 @@ package com.booker.database.impl;
 
 import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
+import com.booker.domain.BookerObj;
 import com.booker.domain.Catalogue;
 import com.booker.domain.Hotel;
 
@@ -62,26 +63,27 @@ public class CatalogueMapperImpl implements DataMapper {
             String des = rs.getString("description");
             Float price = rs.getFloat("price");
             int hotelId = rs.getInt("hotelId");
-            return new Catalogue(id, name, hotelId, des, price);
+            int version = rs.getInt("version");
+            return new Catalogue(id, name, hotelId, des, price, version);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public int insert(Object obj) {
+    public int insert(BookerObj obj) {
         Catalogue catalogue = (Catalogue) obj;
         String sql = "insert into catalogues (name, hotelId, description, price) values (?,?,?,?)";
         return executor.executeStatement(sql, catalogue.getName(), catalogue.getHotelId(), catalogue.getDescription(), catalogue.getPrice());
     }
 
-    public int update(Object obj) {
+    public int update(BookerObj obj) {
         Catalogue catalogue = (Catalogue) obj;
-        String sql = "update catalogues set name = ?, hotelId = ?, description = ?, price = ? where id = ?";
-        return executor.executeStatement(sql, catalogue.getName(), catalogue.getHotelId(), catalogue.getDescription(), catalogue.getPrice(), catalogue.getId());
+        String sql = "update catalogues set version = ?, name = ?, hotelId = ?, description = ?, price = ? where id = ?";
+        return executor.executeStatement(sql, catalogue.getVersion(), catalogue.getName(), catalogue.getHotelId(), catalogue.getDescription(), catalogue.getPrice(), catalogue.getId());
     }
 
-    public void delete(Object obj) {
+    public void delete(BookerObj obj) {
         Catalogue catalogue = (Catalogue) obj;
         String sql = "delete from rooms where catalogueId = ?";
         executor.executeStatement(sql, catalogue.getId());

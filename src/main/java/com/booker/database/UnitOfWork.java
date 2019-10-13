@@ -13,9 +13,9 @@ public class UnitOfWork {
     }
 
     private static UnitOfWork instance = null;
-    private List<Object> newObjects;
-    private List<Object> dirtyObjects;
-    private List<Object> deleteObjects;
+    private List<BookerObj> newObjects;
+    private List<BookerObj> dirtyObjects;
+    private List<BookerObj> deleteObjects;
 
 
     public static UnitOfWork getInstance() {
@@ -25,19 +25,19 @@ public class UnitOfWork {
         return instance;
     }
 
-    public void registerNew(Object object) {
+    public void registerNew(BookerObj object) {
         if (!dirtyObjects.contains(object) && !dirtyObjects.contains(object)) {
             newObjects.add(object);
         }
     }
 
-    public void registerDirty(Object object) {
+    public void registerDirty(BookerObj object) {
         if (!dirtyObjects.contains(object) && !newObjects.contains(object)) {
             dirtyObjects.add(object);
         }
     }
 
-    public void registerDelete(Object object) {
+    public void registerDelete(BookerObj object) {
         if (newObjects.remove(object)){
             return;
         }
@@ -48,15 +48,15 @@ public class UnitOfWork {
     }
 
     public void commit() {
-        for (Object object : newObjects) {
+        for (BookerObj object : newObjects) {
             DataMapper mapper = getMapper(object);
             mapper.insert(object);
         }
-        for (Object object : dirtyObjects) {
+        for (BookerObj object : dirtyObjects) {
             DataMapper mapper = getMapper(object);
             mapper.update(object);
         }
-        for (Object object : deleteObjects) {
+        for (BookerObj object : deleteObjects) {
             DataMapper mapper = getMapper(object);
             mapper.delete(object);
         }
@@ -69,7 +69,7 @@ public class UnitOfWork {
         deleteObjects.clear();
     }
 
-    private DataMapper getMapper(Object object) {
+    public DataMapper getMapper(BookerObj object) {
         if (object instanceof User) {
             return new UserMapperImpl();
         }
@@ -84,6 +84,9 @@ public class UnitOfWork {
         }
         if (object instanceof Service) {
             return new ServiceMapperImpl();
+        }
+        if (object instanceof Booking) {
+            return new BookingMapperImpl();
         }
         return null;
     }

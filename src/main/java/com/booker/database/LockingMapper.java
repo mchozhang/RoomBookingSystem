@@ -1,5 +1,7 @@
 package com.booker.database;
 
+import com.booker.domain.BookerObj;
+
 import java.sql.ResultSet;
 
 /**
@@ -13,7 +15,24 @@ public class LockingMapper implements DataMapper {
     }
 
     @Override
-    public int update(Object object) {
+    public int update(BookerObj object) {
+        try {
+            DataMapper mapper = UnitOfWork.getInstance().getMapper(object);
+            ResultSet rs = mapper.selectRowById(object.getId());
+            int version = 0;
+            if (rs.next()) {
+                version = rs.getInt("version");
+            }
+            if (object.getVersion() != version) {
+                return 0;
+            } else {
+                object.setVersion(version + 1);
+                UnitOfWork.getInstance().registerDirty(object);
+                UnitOfWork.getInstance().commit();
+            }
+        } catch (Exception e) {
+            return 0;
+        }
         return 0;
     }
 
@@ -23,13 +42,13 @@ public class LockingMapper implements DataMapper {
     }
 
     @Override
-    public int insert(Object object) {
+    public int insert(BookerObj object) {
         return 0;
     }
 
 
     @Override
-    public void delete(Object object) {
+    public void delete(BookerObj object) {
 
     }
 }

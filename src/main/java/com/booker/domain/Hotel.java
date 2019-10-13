@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Hotel {
-    private int id;
+public class Hotel extends BookerObj {
     private String name;
     private Location location;
 
@@ -46,11 +45,11 @@ public class Hotel {
         this.location = location;
     }
 
-    public Hotel(int id, String name, Location location) {
+    public Hotel(int id, String name, Location location, int version) {
         this.id = id;
         this.name = name;
         this.location = location;
-
+        this.version = version;
         IdentityMap.putHotel(id, this);
     }
 
@@ -102,10 +101,6 @@ public class Hotel {
     public List<Catalogue> getCatalogues() {
         CatalogueMapperImpl catalogueMapper = new CatalogueMapperImpl();
         return catalogueMapper.findCataloguesByHotelId(this.id);
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {

@@ -84,20 +84,15 @@
     });
 
     function book(roomId) {
-        console.log('book');
         let options = {
             url: '/bookServlet',
             type: 'post',
             data: 'sd=' + startDate + '&ed=' + endDate + '&room=' + roomId + '&id=${catalogue.getId()}',
             success: function (responseText) {
-                console.log('111');
-                console.log(responseText);
-                // window.location.href = '/bookingsServlet';
+                window.location.href = '/bookingsServlet';
             },
             error: function (responseText) {
-                console.log('222');
                 console.log(responseText);
-
             }
         };
 

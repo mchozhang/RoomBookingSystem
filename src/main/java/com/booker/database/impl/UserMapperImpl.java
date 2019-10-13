@@ -2,10 +2,10 @@ package com.booker.database.impl;
 
 import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
+import com.booker.domain.BookerObj;
 import com.booker.domain.Customer;
 import com.booker.domain.Staff;
 import com.booker.domain.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -73,17 +73,18 @@ public class UserMapperImpl implements DataMapper {
         try {
             String role = rs.getString("role");
             int id = rs.getInt("id");
+            int version = rs.getInt("version");
             String username = rs.getString("username");
             String password = rs.getString("password");
             if (role.equals("customer")){
                 String fullName = rs.getString("full_name");
-                Customer customer = new Customer(id, fullName);
+                Customer customer = new Customer(id, fullName, version);
                 customer.setUsername(username);
                 customer.setPassword(password);
                 return customer;
             } else if (role.equals("staff")) {
                 int hotelId = rs.getInt("hotelId");
-                Staff staff = new Staff(id, hotelId);
+                Staff staff = new Staff(id, hotelId, version);
                 staff.setUsername(username);
                 staff.setPassword(password);
                 return staff;
@@ -94,15 +95,15 @@ public class UserMapperImpl implements DataMapper {
         return null;
     }
 
-    public int insert(Object user){
+    public int insert(BookerObj user){
         return 0;
     }
 
-    public int update(Object user){
+    public int update(BookerObj user){
         return 0;
     }
 
-    public void delete(Object user){
+    public void delete(BookerObj user){
 
     }
 }

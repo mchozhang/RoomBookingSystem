@@ -15,7 +15,7 @@ public class Staff extends User {
         this.hotelId = hotelId;
     }
 
-    public Staff(int id, int hotelId) {
+    public Staff(int id, int hotelId, int version) {
         super();
         this.id = id;
         this.role = "staff";

@@ -48,18 +48,11 @@ public class BookServlet extends HttpServlet {
         // acquire login user from session
         User user = AppSession.getUser();
         boolean result = Booking.createBooking(user.getId(), catalogueId, roomId, startDate, endDate);
-//        if (result) {
-//            response.sendRedirect("/bookingsServlet");
-//            System.out.println("444");
-//
-//            return;
-//        } else {
-//            doGet(request, response);
-//        }
-        response.setStatus(200);
-        response.getWriter().write("hello");
-        response.getWriter().close();
-        return;
+        if (result) {
+            response.sendRedirect("/bookingsServlet");
+        } else {
+            doGet(request, response);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

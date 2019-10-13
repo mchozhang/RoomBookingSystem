@@ -6,26 +6,17 @@ import com.booker.database.impl.ServiceMapperImpl;
 
 import java.sql.ResultSet;
 
-public class Service {
-    private int id;
+public class Service extends BookerObj {
     private String name;
 
     public Service(String name){
         this.name = name;
     }
 
-    public Service(int id, String name){
+    public Service(int id, String name, int version){
         this.id = id;
         this.name = name;
         IdentityMap.putService(id, this);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

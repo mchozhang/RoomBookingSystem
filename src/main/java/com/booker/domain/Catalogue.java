@@ -3,15 +3,13 @@ package com.booker.domain;
 import com.booker.database.IdentityMap;
 import com.booker.database.UnitOfWork;
 import com.booker.database.impl.CatalogueMapperImpl;
-import com.booker.database.impl.HotelMapperImpl;
 import com.booker.database.impl.RoomMapperImpl;
 
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
 
-public class Catalogue {
-    private int id;
+public class Catalogue extends BookerObj {
     private String name;
     private int hotelId;
     private String description;
@@ -32,16 +30,18 @@ public class Catalogue {
         return catalogue;
     }
 
-    public Catalogue(int id, String name, int hotelId, String des, Float price) {
+    public Catalogue(int id, String name, int hotelId, String des, Float price, int version) {
         this.id = id;
         this.name = name;
         this.hotelId = hotelId;
         this.description = des;
         this.price = price;
+        this.version = version;
         IdentityMap.putCatalogue(id, this);
     }
 
     public Catalogue(String name, int hotelId, String des, Float price) {
+        super();
         this.name = name;
         this.hotelId = hotelId;
         this.description = des;
@@ -63,10 +63,6 @@ public class Catalogue {
             roomNumberList[i] = rooms.get(i).getNumber();
         }
         return String.join(",", roomNumberList);
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getDescription() {

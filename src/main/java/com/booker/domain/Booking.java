@@ -1,6 +1,7 @@
 package com.booker.domain;
 
 import com.booker.database.IdentityMap;
+import com.booker.database.UnitOfWork;
 import com.booker.database.impl.BookingMapperImpl;
 import com.booker.util.DateUtil;
 
@@ -8,15 +9,13 @@ import java.sql.Date;
 import java.util.List;
 
 
-public class Booking {
-    private int id;
+public class Booking extends BookerObj {
     private int userId;
     private int roomId;
     private Float price;
     private Date startDate;
     private Date endDate;
     private String status;
-    private int version;
 
     private String hotelName;
     private String catalogueName;
@@ -24,13 +23,13 @@ public class Booking {
     private String userFullName;
 
     public Booking(int userId, int roomId, Float price, Date startDate, Date endDate) {
+        super();
         this.userId = userId;
         this.roomId = roomId;
         this.price = price;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = "To be confirmed";
-        this.version = 1;
     }
 
     public Booking(int id, int userId, int roomId, Float price, Date startDate, Date endDate, String status, int version) {
@@ -70,20 +69,12 @@ public class Booking {
             Date endDate = Date.valueOf(endDateStr);
             Catalogue catalogue = Catalogue.getCatalogueById(catalogueId);
             Float price = catalogue.getPrice() * DateUtil.dayDifference(startDateStr, endDateStr);
-            BookingMapperImpl mapper = new BookingMapperImpl();
-            mapper.insert(new Booking(userId, roomId, price, startDate, endDate));
+            UnitOfWork.getInstance().registerNew(new Booking(userId, roomId, price, startDate, endDate));
+            UnitOfWork.getInstance().commit();
             return true;
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getUserId() {
@@ -168,13 +159,5 @@ public class Booking {
 
     public String getDateRange() {
         return startDate.toString() + " - " + endDate.toString();
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 }

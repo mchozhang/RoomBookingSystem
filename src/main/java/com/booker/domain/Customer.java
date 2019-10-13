@@ -13,15 +13,14 @@ public class Customer extends User {
         this.fullName = fullName;
     }
 
-    public Customer(int id, String fullName) {
+    public Customer(int id, String fullName, int version) {
         super();
         this.id = id;
         this.role = "customer";
         this.fullName = fullName;
+        this.version = version;
         IdentityMap.putUser(id, this);
     }
-
-
 
     public String getFullName() {
         if (fullName == null) {

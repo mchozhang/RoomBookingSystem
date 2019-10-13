@@ -22,7 +22,6 @@ public class BookingsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("bookings");
         if (!AppSession.isAuthenticated()) {
             response.sendRedirect("/loginServlet");
             return;

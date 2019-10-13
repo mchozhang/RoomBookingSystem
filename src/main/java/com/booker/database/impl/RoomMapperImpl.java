@@ -2,6 +2,7 @@ package com.booker.database.impl;
 
 import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
+import com.booker.domain.BookerObj;
 import com.booker.domain.Hotel;
 import com.booker.domain.Room;
 
@@ -42,8 +43,7 @@ public class RoomMapperImpl implements DataMapper {
 
     public List<Room> findRoomsByCatalogueId(int catalogueId) {
         try {
-            String sql = "select id, catalogueId, number from rooms " +
-                    "where catalogueId = ?";
+            String sql = "select * from rooms where catalogueId = ?";
             ResultSet rs = executor.getResultSet(sql, catalogueId);
             List<Room> rooms = new ArrayList<>();
             while (rs.next()) {
@@ -59,28 +59,29 @@ public class RoomMapperImpl implements DataMapper {
     private Room createEntity(ResultSet rs) {
         try {
             int id = rs.getInt("id");
+            int version = rs.getInt("version");
             String number = rs.getString("number");
             int catalogueId = rs.getInt("catalogueId");
-            return new Room(id, number, catalogueId);
+            return new Room(id, number, catalogueId, version);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public int insert(Object obj) {
+    public int insert(BookerObj obj) {
         Room room = (Room) obj;
-        String sql = "insert into rooms (number, catalogueId) values (?,?)";
-        return executor.executeStatement(sql, room.getNumber(), room.getCatalogueId());
+        String sql = "insert into rooms (number, catalogueId, version) values (?,?)";
+        return executor.executeStatement(sql, room.getNumber(), room.getCatalogueId(), room.getVersion());
     }
 
-    public int update(Object obj) {
+    public int update(BookerObj obj) {
         Room room = (Room) obj;
-        String sql = "update rooms set number = ?, catalogueId = ? where id = ?";
-        return executor.executeStatement(sql, room.getNumber(), room.getCatalogueId(), room.getId());
+        String sql = "update rooms set version = ?, number = ?, catalogueId = ? where id = ?";
+        return executor.executeStatement(sql, room.getVersion(), room.getNumber(), room.getCatalogueId(), room.getId());
     }
 
-    public void delete(Object obj) {
+    public void delete(BookerObj obj) {
         Room room = (Room) obj;
         String sql = "delete from rooms where id = ?";
         executor.executeStatement(sql, room.getId());

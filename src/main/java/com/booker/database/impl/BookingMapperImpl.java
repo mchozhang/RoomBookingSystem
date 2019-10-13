@@ -2,6 +2,7 @@ package com.booker.database.impl;
 
 import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
+import com.booker.domain.BookerObj;
 import com.booker.domain.Booking;
 import com.booker.domain.Hotel;
 import java.sql.Date;
@@ -81,20 +82,20 @@ public class BookingMapperImpl implements DataMapper {
         return null;
     }
 
-    public int insert(Object obj) {
+    public int insert(BookerObj obj) {
         Booking booking = (Booking) obj;
         String sql = "insert into bookings (userId, roomId, price, startDate, endDate, status, version) values (?,?,?,?,?,?,?)";
         return executor.executeStatement(sql, booking.getUserId(), booking.getRoomId(), booking.getPrice(),
                 booking.getStartDate(), booking.getEndDate(), booking.getStatus(), booking.getVersion());
     }
 
-    public int update(Object obj) {
+    public int update(BookerObj obj) {
         Booking booking = (Booking) obj;
-        String sql = "update bookings set price = ?, status = ? where id = ?";
-        return executor.executeStatement(sql, booking.getPrice(), booking.getStatus(), booking.getId());
+        String sql = "update bookings set version = ? ,startDate = ?, endDate = ?, price = ?, status = ? where id = ?";
+        return executor.executeStatement(sql, booking.getVersion(), booking.getStartDate(), booking.getEndDate(), booking.getPrice(), booking.getStatus(), booking.getId());
     }
 
-    public void delete(Object obj) {
+    public void delete(BookerObj obj) {
         Booking booking = (Booking) obj;
         String sql = "delete from bookings where id = ?";
         executor.executeStatement(sql, booking.getId());

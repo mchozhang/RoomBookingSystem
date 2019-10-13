@@ -2,6 +2,7 @@ package com.booker.database.impl;
 
 import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
+import com.booker.domain.BookerObj;
 import com.booker.domain.Catalogue;
 import com.booker.domain.Hotel;
 import com.booker.domain.Location;
@@ -14,7 +15,7 @@ import java.util.List;
 public class HotelMapperImpl implements DataMapper {
     private QueryExecutor executor;
 
-    public HotelMapperImpl(){
+    public HotelMapperImpl() {
         executor = QueryExecutor.getInstance();
     }
 
@@ -74,26 +75,27 @@ public class HotelMapperImpl implements DataMapper {
             int id = rs.getInt("id");
             String name = rs.getString("name");
             Location location = new Location(rs.getString("suburb"), rs.getString("address"));
-            return new Hotel(id, name, location);
+            int version = rs.getInt("version");
+            return new Hotel(id, name, location, version);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public int insert(Object obj) {
+    public int insert(BookerObj obj) {
         Hotel hotel = (Hotel) obj;
         String sql = "insert into hotels (name, suburb, address) values (?,?,?)";
         return executor.executeStatement(sql, hotel.getName(), hotel.getSuburb(), hotel.getAddress());
     }
 
-    public int update(Object obj) {
+    public int update(BookerObj obj) {
         Hotel hotel = (Hotel) obj;
-        String sql = "update hotels set name = ?, suburb = ?, address = ? where id = ?";
-        return executor.executeStatement(sql, hotel.getName(), hotel.getSuburb(), hotel.getAddress(), hotel.getId());
+        String sql = "update hotels set version = ?, name = ?, suburb = ?, address = ? where id = ?";
+        return executor.executeStatement(sql, hotel.getVersion(), hotel.getName(), hotel.getSuburb(), hotel.getAddress(), hotel.getId());
     }
 
-    public void delete(Object obj) {
+    public void delete(BookerObj obj) {
         Hotel hotel = (Hotel) obj;
         String sql = "delete from hotels where id = ?";
         executor.executeStatement(sql, hotel.getId());

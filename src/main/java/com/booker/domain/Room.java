@@ -1,14 +1,10 @@
 package com.booker.domain;
 
 import com.booker.database.IdentityMap;
-import com.booker.database.UnitOfWork;
-import com.booker.database.impl.CatalogueMapperImpl;
 import com.booker.database.impl.RoomMapperImpl;
-
 import java.sql.ResultSet;
 
-public class Room {
-    private int id;
+public class Room extends BookerObj {
     private String number;
     private int catalogueId;
 
@@ -17,28 +13,21 @@ public class Room {
         this.catalogueId = catalogueId;
     }
 
-    public Room(int id, String number, int catalogueId) {
+    public Room(int id, String number, int catalogueId, int version) {
         this.id = id;
+        this.version = version;
         this.number = number;
         this.catalogueId = catalogueId;
         IdentityMap.putRoom(id, this);
     }
 
-    static public Room getRoomById(int id) {
+    public static Room getRoomById(int id) {
         Room room = IdentityMap.getRoom(id);
         if (room == null) {
             RoomMapperImpl mapper = new RoomMapperImpl();
             room = mapper.findRoomById(id);
         }
         return room;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNumber() {

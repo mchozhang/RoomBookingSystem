@@ -8,8 +8,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
-public abstract class User {
-    protected int id;
+public abstract class User extends BookerObj {
     protected String username;
     protected String password;
     protected String role;
@@ -30,6 +29,7 @@ public abstract class User {
 
     /**
      * authenticate the username and password of an account
+     *
      * @param username username
      * @param password password
      * @return authenticated user object, return null if failed to authenticate
@@ -44,18 +44,10 @@ public abstract class User {
             User user = User.getUserByName(username);
             AppSession.init(user);
             return user;
-        } catch (UnknownAccountException e){
+        } catch (UnknownAccountException e) {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsername() {

@@ -2,6 +2,7 @@ package com.booker.database.impl;
 
 import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
+import com.booker.domain.BookerObj;
 import com.booker.domain.Service;
 
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ import java.util.List;
 public class ServiceMapperImpl implements DataMapper {
     private QueryExecutor executor;
 
-    public ServiceMapperImpl(){
+    public ServiceMapperImpl() {
         executor = QueryExecutor.getInstance();
     }
 
@@ -28,7 +29,7 @@ public class ServiceMapperImpl implements DataMapper {
 
     public List<Service> findServicesByHotelId(int id) {
         try {
-            String sql = "select services.id, services.name " +
+            String sql = "select services.id, services.version, services.name " +
                     "from hotels_services join services on hotels_services.serviceId = services.id " +
                     "where hotels_services.hotelId = ?";
             ResultSet rs = executor.getResultSet(sql, id);
@@ -82,27 +83,28 @@ public class ServiceMapperImpl implements DataMapper {
     private Service createEntity(ResultSet rs) {
         try {
             int id = rs.getInt("id");
+            int version = rs.getInt("version");
             String name = rs.getString("name");
-            return new Service(id, name);
+            return new Service(id, name, version);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public int insert(Object obj) {
+    public int insert(BookerObj obj) {
         Service service = (Service) obj;
-        String sql = "insert into services (name) values (?)";
-        return executor.executeStatement(sql, service.getName());
+        String sql = "insert into services (name, version) values (?,?)";
+        return executor.executeStatement(sql, service.getName(), service.getVersion());
     }
 
-    public int update(Object obj) {
+    public int update(BookerObj obj) {
         Service service = (Service) obj;
-        String sql = "update services set name = ? where id = ?";
-        return executor.executeStatement(sql, service.getName(), service.getId());
+        String sql = "update services set version = ?, name = ? where id = ?";
+        return executor.executeStatement(sql, service.getVersion(), service.getName(), service.getId());
     }
 
-    public void delete(Object obj) {
+    public void delete(BookerObj obj) {
         Service service = (Service) obj;
         String sql = "delete from services where id = ?";
         executor.executeStatement(sql, service.getId());
