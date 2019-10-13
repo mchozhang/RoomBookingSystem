@@ -4,8 +4,6 @@ import com.booker.database.DataMapper;
 import com.booker.database.QueryExecutor;
 import com.booker.domain.Booking;
 import com.booker.domain.Hotel;
-import com.booker.domain.Room;
-
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;

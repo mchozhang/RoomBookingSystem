@@ -5,12 +5,11 @@ import java.sql.ResultSet;
 /**
  * implicit optimistic lock
  */
-public class LockingMapper implements DataMapper{
+public class LockingMapper implements DataMapper {
     private DataMapper mapper;
 
     public LockingMapper(DataMapper mapper) {
         this.mapper = mapper;
-
     }
 
     @Override
