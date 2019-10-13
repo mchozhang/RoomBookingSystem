@@ -75,7 +75,8 @@ public class BookingMapperImpl implements DataMapper {
             String status = rs.getString("status");
             Date startDate = rs.getDate("startDate");
             Date endDate = rs.getDate("endDate");
-            return new Booking(id, userId, roomId, price, startDate, endDate, status);
+            int version = rs.getInt("version");
+            return new Booking(id, userId, roomId, price, startDate, endDate, status, version);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,9 +85,9 @@ public class BookingMapperImpl implements DataMapper {
 
     public int insert(Object obj) {
         Booking booking = (Booking) obj;
-        String sql = "insert into bookings (userId, roomId, price, startDate, endDate, status) values (?,?,?,?,?,?)";
+        String sql = "insert into bookings (userId, roomId, price, startDate, endDate, status, version) values (?,?,?,?,?,?,?)";
         return executor.executeStatement(sql, booking.getUserId(), booking.getRoomId(), booking.getPrice(),
-                booking.getStartDate(), booking.getEndDate(), booking.getStatus());
+                booking.getStartDate(), booking.getEndDate(), booking.getStatus(), booking.getVersion());
     }
 
     public int update(Object obj) {

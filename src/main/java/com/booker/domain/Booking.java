@@ -16,13 +16,11 @@ public class Booking {
     private Date startDate;
     private Date endDate;
     private String status;
+    private int version;
 
     private String hotelName;
     private String catalogueName;
     private String roomNumber;
-
-
-
     private String userFullName;
 
     public Booking(int userId, int roomId, Float price, Date startDate, Date endDate) {
@@ -32,9 +30,10 @@ public class Booking {
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = "To be confirmed";
+        this.version = 1;
     }
 
-    public Booking(int id, int userId, int roomId, Float price, Date startDate, Date endDate, String status) {
+    public Booking(int id, int userId, int roomId, Float price, Date startDate, Date endDate, String status, int version) {
         this.id = id;
         this.userId = userId;
         this.roomId = roomId;
@@ -42,6 +41,7 @@ public class Booking {
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
+        this.version = version;
 
         Customer user = (Customer)Customer.getUserById(userId);
         Room room = Room.getRoomById(roomId);
@@ -168,5 +168,13 @@ public class Booking {
 
     public String getDateRange() {
         return startDate.toString() + " - " + endDate.toString();
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
