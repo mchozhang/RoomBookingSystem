@@ -1,9 +1,8 @@
 package com.booker.servlet;
 
-import com.booker.util.AppSession;
+import com.booker.util.session.AppSession;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

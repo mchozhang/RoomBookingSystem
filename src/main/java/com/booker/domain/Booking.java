@@ -1,11 +1,14 @@
 package com.booker.domain;
 
 import com.booker.database.IdentityMap;
+import com.booker.database.LockingMapper;
 import com.booker.database.UnitOfWork;
 import com.booker.database.impl.BookingMapperImpl;
 import com.booker.util.DateUtil;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -21,6 +24,14 @@ public class Booking extends BookerObj {
     private String catalogueName;
     private String roomNumber;
     private String userFullName;
+
+    public Booking(int userId, int roomId, Date startDate, Date endDate) {
+        this.userId = userId;
+        this.roomId = roomId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = "To be confirmed";
+    }
 
     public Booking(int userId, int roomId, Float price, Date startDate, Date endDate) {
         super();
@@ -42,7 +53,7 @@ public class Booking extends BookerObj {
         this.status = status;
         this.version = version;
 
-        Customer user = (Customer)Customer.getUserById(userId);
+        Customer user = (Customer) Customer.getUserById(userId);
         Room room = Room.getRoomById(roomId);
         Catalogue catalogue = Catalogue.getCatalogueById(room.getCatalogueId());
         Hotel hotel = Hotel.getHotelById(catalogue.getHotelId());
@@ -64,17 +75,105 @@ public class Booking extends BookerObj {
     }
 
     public static boolean createBooking(int userId, int catalogueId, int roomId, String startDateStr, String endDateStr) {
+        Date startDate = Date.valueOf(startDateStr);
+        Date endDate = Date.valueOf(endDateStr);
+        Catalogue catalogue = Catalogue.getCatalogueById(catalogueId);
+        Float price = catalogue.getPrice() * DateUtil.dayDifference(startDateStr, endDateStr);
+        return Booking.createBooking(new Booking(userId, roomId, price, startDate, endDate));
+    }
+
+    public static boolean createBooking(Booking booking) {
         try {
-            Date startDate = Date.valueOf(startDateStr);
-            Date endDate = Date.valueOf(endDateStr);
-            Catalogue catalogue = Catalogue.getCatalogueById(catalogueId);
-            Float price = catalogue.getPrice() * DateUtil.dayDifference(startDateStr, endDateStr);
-            UnitOfWork.getInstance().registerNew(new Booking(userId, roomId, price, startDate, endDate));
+            if (booking.hasDateConflict()) {
+                return false;
+            }
+            UnitOfWork.getInstance().registerNew(booking);
             UnitOfWork.getInstance().commit();
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * whether a new booking has date conflict with other bookings
+     */
+    public boolean hasDateConflict() {
+        return hasDateConflict(getStartDate(), getEndDate());
+    }
+
+    public boolean hasDateConflict(Date startDate, Date endDate) {
+        BookingMapperImpl mapper = new BookingMapperImpl();
+        List<Booking> bookings =
+                mapper.findBookingByRoomWithinDate(getRoomId(), startDate, endDate);
+        if (getId() == NOT_ASSIGNED) {
+            return bookings.size() > 0;
+        } else {
+            if (bookings.size() == 0) {
+                return false;
+            }
+            return !(bookings.size() == 1 && bookings.get(0).getId() == id);
+        }
+    }
+
+    public static boolean confirmBooking(int bookingId) {
+        Booking booking = IdentityMap.getBooking(bookingId);
+        try {
+            if (booking.getStatus().equals("To be confirmed")) {
+                booking.setStatus("Confirmed");
+                LockingMapper mapper = new LockingMapper(new BookingMapperImpl());
+                mapper.update(booking);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean deleteBooking(int bookingId) {
+        Booking booking = IdentityMap.getBooking(bookingId);
+        try {
+            LockingMapper mapper = new LockingMapper(new BookingMapperImpl());
+            mapper.delete(booking);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean updateBooking(int bookingId, String start, String end) {
+        Booking booking = IdentityMap.getBooking(bookingId);
+        Room room = IdentityMap.getRoom(booking.getRoomId());
+        Catalogue catalogue = IdentityMap.getCatalogue(room.getCatalogueId());
+        try {
+            Date startDate = Date.valueOf(start);
+            Date endDate = Date.valueOf(end);
+            if (booking.hasDateConflict(startDate, endDate)) {
+                return false;
+            }
+            booking.setStartDate(startDate);
+            booking.setEndDate(endDate);
+            booking.setStatus("To be confirmed");
+            booking.setPrice(catalogue.getPrice() * DateUtil.dayDifference(start, end));
+            LockingMapper mapper = new LockingMapper(new BookingMapperImpl());
+            mapper.update(booking);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean hasStarted() {
+        String date = Date.valueOf(LocalDateTime.now().toLocalDate()).toString();
+        return startDate.toString().compareTo(date) < 0;
+    }
+
+    public boolean hasFinished() {
+        String date = Date.valueOf(LocalDateTime.now().toLocalDate()).toString();
+        return endDate.toString().compareTo(date) < 0;
     }
 
     public int getUserId() {

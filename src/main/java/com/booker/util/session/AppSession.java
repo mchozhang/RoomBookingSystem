@@ -1,4 +1,4 @@
-package com.booker.util;
+package com.booker.util.session;
 
 import com.booker.domain.User;
 import org.apache.shiro.SecurityUtils;

@@ -30,6 +30,9 @@
 
             <div style="margin-top: 20px">
                 <label> Available Rooms</label>
+                <div style="margin-bottom: 10px">
+                    <a style="color: indianred" id="error-msg"></a>
+                </div>
                 <table class="table table-bordered room-table" id="table">
                     <thead>
                     <tr>
@@ -38,18 +41,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${rooms}" var="room">
+                    <c:forEach items="${rooms}" var="room" varStatus="loop">
                         <tr>
                             <td>${room.getNumber()}</td>
-                            <td>
-                                <button class="btn btn-primary" onclick="book(${room.getId()})">Confirm Booking
-                                </button>
-                            </td>
+                            <c:choose>
+                                <c:when test="${roomAvailabilities.get(loop.index)}">
+                                    <td>
+                                        <button class="btn btn-primary" onclick="book(${room.getId()})">Confirm Booking
+                                        </button>
+                                    </td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td>
+                                        <button disabled class="btn btn-danger">Reserverd
+                                        </button>
+                                    </td>
+                                </c:otherwise>
+                            </c:choose>
+
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
             </div>
+
+
         </div>
     </jsp:body>
 
@@ -89,7 +105,11 @@
             type: 'post',
             data: 'sd=' + startDate + '&ed=' + endDate + '&room=' + roomId + '&id=${catalogue.getId()}',
             success: function (responseText) {
-                window.location.href = '/bookingsServlet';
+                if (responseText === 'success') {
+                    window.location.href = '/bookingsServlet';
+                } else {
+                    $('#error-msg').text(responseText);
+                }
             },
             error: function (responseText) {
                 console.log(responseText);

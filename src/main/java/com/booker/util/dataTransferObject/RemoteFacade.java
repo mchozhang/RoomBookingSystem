@@ -1,7 +1,8 @@
-package com.booker.util;
+package com.booker.util.dataTransferObject;
 
 import com.booker.database.impl.UserMapperImpl;
 import com.booker.domain.User;
+import com.booker.util.dataTransferObject.DTOAssembler;
 
 import java.rmi.RemoteException;
 

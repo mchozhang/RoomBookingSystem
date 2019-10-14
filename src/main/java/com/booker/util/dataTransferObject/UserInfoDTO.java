@@ -1,4 +1,4 @@
-package com.booker.util;
+package com.booker.util.dataTransferObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

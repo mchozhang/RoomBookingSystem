@@ -1,8 +1,12 @@
 package com.booker.domain;
 
 import com.booker.database.IdentityMap;
+import com.booker.database.impl.BookingMapperImpl;
 import com.booker.database.impl.RoomMapperImpl;
+
+import java.sql.Date;
 import java.sql.ResultSet;
+import java.util.List;
 
 public class Room extends BookerObj {
     private String number;
@@ -28,6 +32,14 @@ public class Room extends BookerObj {
             room = mapper.findRoomById(id);
         }
         return room;
+    }
+
+    public boolean isAvailable(String start, String end) {
+        Date startDate = Date.valueOf(start);
+        Date endDate = Date.valueOf(end);
+        BookingMapperImpl mapper = new BookingMapperImpl();
+        List<Booking> bookings = mapper.findBookingByRoomWithinDate( id, startDate, endDate);
+        return bookings.size() == 0;
     }
 
     public String getNumber() {

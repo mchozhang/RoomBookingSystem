@@ -17,7 +17,6 @@ public class LockingMapper implements DataMapper {
     @Override
     public int update(BookerObj object) {
         try {
-            DataMapper mapper = UnitOfWork.getInstance().getMapper(object);
             ResultSet rs = mapper.selectRowById(object.getId());
             int version = 0;
             if (rs.next()) {
@@ -37,6 +36,25 @@ public class LockingMapper implements DataMapper {
     }
 
     @Override
+    public void delete(BookerObj object) {
+        try {
+            ResultSet rs = mapper.selectRowById(object.getId());
+            int version = 0;
+            if (rs.next()) {
+                version = rs.getInt("version");
+            }
+            if (object.getVersion() != version) {
+                return;
+            } else {
+                UnitOfWork.getInstance().registerDelete(object);
+                UnitOfWork.getInstance().commit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public ResultSet selectRowById(int id) {
         return null;
     }
@@ -44,11 +62,5 @@ public class LockingMapper implements DataMapper {
     @Override
     public int insert(BookerObj object) {
         return 0;
-    }
-
-
-    @Override
-    public void delete(BookerObj object) {
-
     }
 }

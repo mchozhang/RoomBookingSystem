@@ -1,10 +1,8 @@
 package com.booker.servlet;
 
-import com.booker.domain.Customer;
 import com.booker.domain.Hotel;
-import com.booker.domain.Staff;
 import com.booker.domain.User;
-import com.booker.util.AppSession;
+import com.booker.util.session.AppSession;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

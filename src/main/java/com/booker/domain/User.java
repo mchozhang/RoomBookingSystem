@@ -2,7 +2,7 @@ package com.booker.domain;
 
 import com.booker.database.IdentityMap;
 import com.booker.database.impl.UserMapperImpl;
-import com.booker.util.AppSession;
+import com.booker.util.session.AppSession;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;

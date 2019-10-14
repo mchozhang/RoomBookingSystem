@@ -1,10 +1,12 @@
 package com.booker.domain;
 
 public abstract class BookerObj {
+    public static final int NOT_ASSIGNED = 0;
     protected int id;
     protected int version;
 
     public BookerObj() {
+        id = NOT_ASSIGNED;
         version = 1;
     }
 

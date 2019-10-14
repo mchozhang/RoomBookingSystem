@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="header" fragment="true" %>
 <%@attribute name="footer" fragment="true" %>
-<%@ tag import="com.booker.util.AppSession" %>
+<%@ tag import="com.booker.util.session.AppSession" %>
 <html>
 <head>
     <%--    <title>${title}</title>--%>
@@ -29,6 +29,15 @@
         <div>
             <c:choose>
                 <c:when test="${AppSession.isAuthenticated()}">
+                    <button class="btn btn-sm btn-dark" onclick="window.document.location = '/hotelListServlet'">
+                        Hotel List
+                    </button>
+                    <button class="btn btn-sm btn-dark" onclick="window.document.location = '/bookingsServlet'">
+                        My Bookings
+                    </button>
+
+                    <button class="btn btn-sm btn-dark" onclick="window.document.location = '/logoutServlet'">Log out
+                    </button>
                     <c:choose>
                         <c:when test='${AppSession.getUser().getRole().equals("staff")}'>
                             <a class="navbar-text" style="color: #fdfdfe">${AppSession.getUser().getHotelName()}</a>
@@ -37,13 +46,6 @@
                             <a class="navbar-text" style="color: #fdfdfe">${AppSession.getUser().getFullName()}</a>
                         </c:otherwise>
                     </c:choose>
-
-                    <button class="btn btn-sm btn-dark" onclick="window.document.location = '/bookingsServlet'">My
-                        Bookings
-                    </button>
-
-                    <button class="btn btn-sm btn-dark" onclick="window.document.location = '/logoutServlet'">Log out
-                    </button>
                 </c:when>
             </c:choose>
         </div>

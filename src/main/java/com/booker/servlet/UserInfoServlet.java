@@ -1,9 +1,9 @@
 package com.booker.servlet;
 
 import com.booker.domain.User;
-import com.booker.util.AppSession;
-import com.booker.util.DTOAssembler;
-import com.booker.util.UserInfoDTO;
+import com.booker.util.session.AppSession;
+import com.booker.util.dataTransferObject.DTOAssembler;
+import com.booker.util.dataTransferObject.UserInfoDTO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

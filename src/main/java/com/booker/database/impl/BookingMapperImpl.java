@@ -5,6 +5,8 @@ import com.booker.database.QueryExecutor;
 import com.booker.domain.BookerObj;
 import com.booker.domain.Booking;
 import com.booker.domain.Hotel;
+import com.booker.util.DateUtil;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,6 +67,24 @@ public class BookingMapperImpl implements DataMapper {
         return null;
     }
 
+    public List<Booking> findBookingByRoomWithinDate(int roomId, Date starDate, Date endDate) {
+        List<Booking> bookings = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM bookings WHERE " +
+                    "roomId = ? AND (" +
+                    "(startDate <= ? AND endDate >= ?) OR " +
+                    "(startDate <= ? AND endDate >= ?) OR " +
+                    "(startDate >= ? AND endDate <= ?))";
+            ResultSet rs = executor.getResultSet(sql, roomId, starDate, endDate, starDate, endDate, starDate, endDate);
+            while (rs.next()) {
+                bookings.add(createEntity(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
     private Booking createEntity(ResultSet rs) {
         try {
             int id = rs.getInt("id");
@@ -75,11 +95,21 @@ public class BookingMapperImpl implements DataMapper {
             Date startDate = rs.getDate("startDate");
             Date endDate = rs.getDate("endDate");
             int version = rs.getInt("version");
+            if (DateUtil.getToday().compareTo(endDate.toString()) > 0) {
+                status = "Finished";
+                bookingFinished(id);
+            }
             return new Booking(id, userId, roomId, price, startDate, endDate, status, version);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void bookingFinished(int id) {
+        String sql = "update bookings set status = ? where id = ?";
+        executor.executeStatement(sql, "Finished", id);
+
     }
 
     public int insert(BookerObj obj) {

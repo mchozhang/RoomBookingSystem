@@ -1,7 +1,7 @@
 package com.booker.servlet;
 
 import com.booker.domain.*;
-import com.booker.util.AppSession;
+import com.booker.util.session.AppSession;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
