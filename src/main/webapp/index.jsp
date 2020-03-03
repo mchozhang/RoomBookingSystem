@@ -31,6 +31,14 @@
                 </div>
             </div>
         </div>
+        <div style="margin-top: 80px">
+            customer test account:<br>
+            username: alice password: admin
+        </div>
+        <div style="margin-top: 10px">
+            staff test account:<br>
+            username: chris password: admin
+        </div>
     </jsp:body>
 
 </template:generic>
