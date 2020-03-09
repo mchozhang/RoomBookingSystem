@@ -3,7 +3,6 @@
 
 Booker is a demonstration web app to showcase software architecture design and pattern implementation for modern enterprise systems.  
 Its 2 features provide room reservation capabilities for the customers and reservation management capabilities to the hotel staff.   
-A
 
 ## Screenshots
 staff editing hotel information
