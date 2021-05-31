@@ -108,6 +108,7 @@ public class HotelServlet extends HttpServlet {
         String[] editRooms = request.getParameterValues("editRooms");
         if (editId != null) {
             Catalogue.editCatalogue(editId, editName, editDescription, editPrice, editRooms);
+            System.out.println(editRooms);
             doGet(request, response);
             return;
         }

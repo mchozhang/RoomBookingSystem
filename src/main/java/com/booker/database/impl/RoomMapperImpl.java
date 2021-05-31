@@ -71,7 +71,7 @@ public class RoomMapperImpl implements DataMapper {
 
     public int insert(BookerObj obj) {
         Room room = (Room) obj;
-        String sql = "insert into rooms (number, catalogueId, version) values (?,?)";
+        String sql = "insert into rooms (number, catalogueId, version) values (?,?,?)";
         return executor.executeStatement(sql, room.getNumber(), room.getCatalogueId(), room.getVersion());
     }
 
